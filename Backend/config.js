@@ -5,7 +5,7 @@ const config = {
         }
     },
     jwt:{
-        jwtKey:process.env.JWT_KEY|| "ECLINIC"
+        jwtKey:process.env.JWT_KEY|| "CODEVIEW"
     },
     database:{
         local:{

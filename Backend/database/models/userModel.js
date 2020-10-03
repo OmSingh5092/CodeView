@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const database = require('../database');
 
-const userModel = database.define('doctor',{
+const userModel = database.define('user',{
     user_id:{
         type:Sequelize.BIGINT,
         primaryKey:true,
@@ -19,12 +19,12 @@ const userModel = database.define('doctor',{
     },
     name:Sequelize.TEXT,
 
-
     created_at: {
         type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+        defaultValue: database.literal('CURRENT_TIMESTAMP')
     },
+
     updated_at: Sequelize.DATE,
     deleted_at: Sequelize.DATE
 

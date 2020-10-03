@@ -1,6 +1,7 @@
 const express = require('express');
 const app = express();
 const config = require('./config');
+const database = require('./database/database');
 
 //Applying middlewares
 app.use(express.json());
