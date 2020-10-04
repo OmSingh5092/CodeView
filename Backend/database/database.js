@@ -1,35 +1,12 @@
-const Sequelize = require('sequelize');
-const config = require('../config').database.local;
-const sequelize = new Sequelize(
-    config.DATABASE_NAME,
-    config.DATABASE_USERNAME,
-    config.DATABASE_PASSWORD,
-    {
-        host:config.DATABASE_HOST,
-        port:config.DATABASE_PORT,
-        dialect: config.DATABASE_DIALECT,
-        //Removed to test local database without ssl
-        /*dialectOptions: {
-            ssl: {
-            require: true,
-            rejectUnauthorized: false
-            } 
-        },  */
-        operatorAliases: false,
-        // socketPath : env.SOCKET_PATH,
-        dialectOptions: config.DIALECT_OPTIONS
-        //  logging: false
-    }
-)
-module.exports=sequelize;
+const mongoose = require('mongoose');
+const config = require('../config');
 
-//Adding models
-require('./models/userModel');
+mongoose.connect(config.database.local.uri);
 
-sequelize.sync({ force: true })
-  .then(() => {
-    console.log(`Database & tables created!`)
-}).catch((err)=>{
-    console.log(err);
-}) 
- 
+const connection = mongoose.connection;
+
+connection.once("open",function(){
+    console.log("\n\nMongoose connection successfull\n\n");
+});
+
+module.exports = connection;
