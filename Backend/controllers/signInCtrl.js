@@ -4,7 +4,7 @@ const config = require('../config');
 
 const Interviewer = require('../database/schema/interviewer');
 const createUser = async (req,res)=>{
-    /*const idToken = req.body.idToken;
+    const idToken = req.body.idToken;
     const client = new OAuth2Client(config.gcp.clientId);
 
     if(idToken == null){
@@ -19,9 +19,9 @@ const createUser = async (req,res)=>{
         audience:config.gcp.clientId,
     });
 
-    const payload = ticket.getPayload();*/
-    const userEmail = "OmSingh"//payload['email'];
-    const userName = "Name"//payload['name'];
+    const payload = ticket.getPayload();
+    const userEmail = payload['email'];
+    const userName = payload['name'];
 
     const authData = {
         email: userEmail,

@@ -10,6 +10,20 @@ const interviewer = new Schema(
         email:{
             type:String
         },
+        phone:{
+            type:Number
+        },
+        company:{
+            type:String
+        },
+        website:{
+            type:String,
+        },
+        photo:{
+            type:String,
+        }
+    },{
+        timestamps:true
     },
     {
         collection:"interviewers"
