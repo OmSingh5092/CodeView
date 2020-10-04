@@ -14,6 +14,9 @@ const config = {
         // to be saved to the store 
         saveUninitialized: true
     },
+    jwt:{
+        TOKEN_SECRET:"OmSingh"
+    },
     database:{
         local:{
             uri:"mongodb://localhost:27017/CodeView"

@@ -1,4 +1,6 @@
 const { OAuth2Client } = require('google-auth-library');
+const   jwt = require('jsonwebtoken');
+const config = require('../config');
 
 const Interviewer = require('../database/schema/interviewer');
 const createUser = async (req,res)=>{
@@ -21,18 +23,20 @@ const createUser = async (req,res)=>{
     const userEmail = "OmSingh"//payload['email'];
     const userName = "Name"//payload['name'];
 
-    req.session.user = {
-        name:userName,
-        email:userEmail,
+    const authData = {
+        email: userEmail,
+        name: userName,
     }
 
     try{
         const document = await Interviewer.findOne({email:userEmail});
         console.log("User Exists")
-        req.session.user['id'] = document.id;
+        authData.id = document.id;
+        const token = jwt.sign(authData,config.jwt.TOKEN_SECRET);
         return res.status(200).json({
             success:true,
             newUser:false,
+            jwt:token
         })
     }
     catch(err){
@@ -40,16 +44,16 @@ const createUser = async (req,res)=>{
         console.log("User doesnot exists");
         const interviewer = new Interviewer({
             name:userName,
-            email:userEmail
+            email:userEmail,
         })
-        
         interviewer.save()
         .then((data)=>{
-            req.session.user['id'] = data.id;
-
+            authData.id = data.id;
+            const token = jwt.sign(authData,config.jwt.TOKEN_SECRET);
             return res.status(200).json({
                 success:true,
                 newUser:true,
+                jwt: token
             })
         })
         .catch((err)=>{
@@ -59,9 +63,7 @@ const createUser = async (req,res)=>{
                 msg:"Internal server error",
             })
         })
-    }
-
-    
+    }    
 }
 
 module.exports = {createUser};
