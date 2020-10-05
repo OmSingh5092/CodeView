@@ -5,5 +5,4 @@ const signInCtrl = require('../controllers/signInCtrl');
 
 router.post('/interviewer',signInCtrl.createUser);
 
-
 module.exports = router;
