@@ -1,11 +1,65 @@
 import React from 'react'
 
-import {Button} from '@material-ui/core'
+import {Button,Dialog, DialogContent, DialogTitle,DialogActions} from '@material-ui/core'
 import './style.css';
 
-function LoginScreen(props){
+import IntervierLogin from '../molecules/InterviewerLogin';
+import GoogleLoginButton from '../atoms/GoogleLoginButton';
 
-    return(<div className="body">
+function InterviewerDialog(props){
+    const isOpen = props.isOpen;
+    const onClose = props.onClose;
+    return(
+        <Dialog open={isOpen} onClose = {onClose}>
+            <DialogTitle>Sign In As An Interviewer</DialogTitle>
+            <DialogContent style={{margin:20}}>
+                <div>
+                    <IntervierLogin onSubmit ={(data)=>{
+
+                    }} />
+                </div>
+            </DialogContent>
+            <div style={{margin:"auto"}}>
+                <GoogleLoginButton onClick = {()=>{}}/>
+            </div>
+            
+            
+            <DialogActions>
+                <Button onClick={onClose}>
+                    Cancle
+                </Button>
+            </DialogActions>
+        </Dialog>
+        
+    )
+}
+
+function CandidateDialog(props){
+    const isOpen = props.isOpen;
+    const onClose = props.onClose;
+    return(
+        <Dialog open={isOpen} onClose={onClose} style={{margin:20}}>
+            <DialogTitle>Please enter the details</DialogTitle>
+            <DialogContent>
+                    <div>
+                    
+                    </div>
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={onClose}>
+                    Cancle
+                </Button>
+            </DialogActions>
+        </Dialog>
+        )
+}
+
+function LoginScreen(props){
+    const [interviewerDialog,setInterviewDialog] = React.useState(false);
+    const [candidateDialog,setCandidateDialog] = React.useState(false);
+
+    return(
+    <div className="body">
 
         <div style={{
             fontSize:50,
@@ -30,15 +84,18 @@ function LoginScreen(props){
         }}>
             <Button color="primary" variant="contained" style={{
                 margin:20
-            }}>
+            }} onClick={()=>setInterviewDialog(true)}>
                 Sign in as interviewer
             </Button>
             <Button color="secondary" variant="contained" style={{
                 margin:20
-            }}>
+            }} onClick={()=> setCandidateDialog(true)}>
                 Join interview room
             </Button>
         </div>
+        
+        <InterviewerDialog isOpen = {interviewerDialog} onClose = {()=> setInterviewDialog(false)}/>
+        <CandidateDialog isOpen = {candidateDialog} onClose = {()=> setCandidateDialog(false)}/>
         
     </div>)
 }
