@@ -8,7 +8,7 @@ function LoadingScreen(props){
 
     return(
         <div>
-            
+            Loading...
         </div>
     )
 }
@@ -17,22 +17,25 @@ function LoadingScreen(props){
 
 function Main(props){
 
-    const [scriptLoading, setScriptLoading] = React.useState(false);
+    const [scriptLoading, setScriptLoading] = React.useState(true);
 
     useEffect(()=>{
         const googleSigninScript = document.createElement('script');
         googleSigninScript.src = "https://apis.google.com/js/platform.js";
-        googleSigninScript.onload = ()=>{};
+        googleSigninScript.onload = ()=>{setScriptLoading(false)};
+        document.body.append(googleSigninScript);
     },[1])
 
 
     return (
         <div>
-            
+            {scriptLoading?<LoadingScreen/>:
             <HashRouter>
                 <Route exact path= "/" component={(LoginScreen)}/>
-                
-            </HashRouter>
+    
+            </HashRouter>}
+            
+            
         </div>
     )
 }
