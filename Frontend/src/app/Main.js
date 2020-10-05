@@ -4,6 +4,15 @@ import {useEffect} from 'react'
 
 import LoginScreen from './components/screens/LoginScreen'
 
+function LoadingScreen(props){
+
+    return(
+        <div>
+            
+        </div>
+    )
+}
+
 
 
 function Main(props){
