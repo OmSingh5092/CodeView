@@ -1,9 +1,10 @@
 import React from 'react'
 
-import {Button,Dialog, DialogContent, DialogTitle,DialogActions} from '@material-ui/core'
+import {Button,Dialog, DialogContent, DialogTitle,DialogActions, ButtonBase} from '@material-ui/core'
 import './style.css';
 
-import IntervierLogin from '../molecules/InterviewerLogin';
+import IntervierLogin from '../molecules/InterViewerLogin';
+import JoinRoomForm from '../molecules/JoinRoomForm';
 import GoogleLoginButton from '../atoms/GoogleLoginButton';
 
 function InterviewerDialog(props){
@@ -22,6 +23,14 @@ function InterviewerDialog(props){
             <div style={{margin:"auto"}}>
                 <GoogleLoginButton onClick = {()=>{}}/>
             </div>
+            <div style={{margin:"auto"}} >
+                <ButtonBase onClick={()=>{}} >
+                    <div style={{margin:20, fontFamily:"Roboto-Black", fontSize:20}}>
+                        Are you a new user?
+                    </div>
+                </ButtonBase>
+            </div>
+            
             
             
             <DialogActions>
@@ -40,9 +49,9 @@ function CandidateDialog(props){
     return(
         <Dialog open={isOpen} onClose={onClose} style={{margin:20}}>
             <DialogTitle>Please enter the details</DialogTitle>
-            <DialogContent>
+            <DialogContent style={{margin:20}}>
                     <div>
-                    
+                        <JoinRoomForm onSubmit = {(data)=>{}}/>
                     </div>
             </DialogContent>
             <DialogActions>
