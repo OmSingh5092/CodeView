@@ -2,14 +2,56 @@ import React from 'react'
 
 import {Button,Dialog, DialogContent, DialogTitle,DialogActions, ButtonBase} from '@material-ui/core'
 import './style.css';
+import {withRouter} from 'react-router-dom'
 
 import IntervierLogin from '../molecules/InterViewerLogin';
 import JoinRoomForm from '../molecules/JoinRoomForm';
 import GoogleLoginButton from '../atoms/GoogleLoginButton';
 
-function InterviewerDialog(props){
+import {googleSignIn} from '../../utils/api/controllers/signInCtrl'
+import {getOwnProfile} from '../../utils/api/controllers/profileCtrl'
+
+import {UserData} from '../../utils/localStorage';
+
+const InterviewerDialog = withRouter((props)=>{
     const isOpen = props.isOpen;
     const onClose = props.onClose;
+
+    const googleLoginSuccess = (response)=>{
+        var profile = response.profileObj
+        console.log("Login");
+        googleSignIn(response).then((res)=>(res.json()))
+        .then((data)=>{
+            console.log("login successfull");
+            //Saving data in 
+            //Getting Success.
+            if(data.success){
+                UserData.setToken(data.jwt);
+                //setting email
+                UserData.setEmail(profile.email);
+                if(data.newUser){
+                    props.history.push('/register');
+                }else{
+                    console.log(UserData.getToken());
+                    getOwnProfile().then((res)=>(res.json()))
+                    .then((res)=>{
+                        if(res.success){
+                            UserData.setProfileData(res.profile);
+                            props.history.push('/interviewer');
+                        }else{
+                            console.log(res.msg);
+                        }
+                        
+                    })
+                    
+                }
+            }else{
+                console.log(data.msg);
+            }
+        }).catch((err)=>{
+            console.log("Error",err);
+        })
+    }
     return(
         <Dialog open={isOpen} onClose = {onClose}>
             <DialogTitle>Sign In As An Interviewer</DialogTitle>
@@ -21,7 +63,7 @@ function InterviewerDialog(props){
                 </div>
             </DialogContent>
             <div style={{margin:"auto"}}>
-                <GoogleLoginButton onClick = {()=>{}}/>
+                <GoogleLoginButton onSuccess= {googleLoginSuccess} onFailure = {(response)=>{console.log("Error",response)}}/>
             </div>
             <div style={{margin:"auto"}} >
                 <ButtonBase onClick={()=>{}} >
@@ -30,9 +72,6 @@ function InterviewerDialog(props){
                     </div>
                 </ButtonBase>
             </div>
-            
-            
-            
             <DialogActions>
                 <Button onClick={onClose}>
                     Cancle
@@ -41,9 +80,9 @@ function InterviewerDialog(props){
         </Dialog>
         
     )
-}
+});
 
-function CandidateDialog(props){
+const CandidateDialog = withRouter((props)=>{
     const isOpen = props.isOpen;
     const onClose = props.onClose;
     return(
@@ -61,7 +100,7 @@ function CandidateDialog(props){
             </DialogActions>
         </Dialog>
         )
-}
+})
 
 function LoginScreen(props){
     const [interviewerDialog,setInterviewDialog] = React.useState(false);
@@ -109,4 +148,4 @@ function LoginScreen(props){
     </div>)
 }
 
-export default LoginScreen;
+export default withRouter(LoginScreen);

@@ -3,7 +3,7 @@ const   jwt = require('jsonwebtoken');
 const config = require('../config');
 
 const Interviewer = require('../database/schema/interviewer');
-const createUser = async (req,res)=>{
+const googleSignIn= async (req,res)=>{
     const idToken = req.body.idToken;
     const client = new OAuth2Client(config.gcp.clientId);
 
@@ -66,4 +66,10 @@ const createUser = async (req,res)=>{
     }    
 }
 
-module.exports = {createUser};
+const emailSignIn = (req,res)=>{
+
+}
+
+
+
+module.exports = {googleSignIn,emailSignIn};

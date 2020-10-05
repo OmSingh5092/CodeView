@@ -1,4 +1,4 @@
-export default UserData = function(){
+export const UserData = function(){
     var data = {
         userExists:false,
         tokenExists:false,

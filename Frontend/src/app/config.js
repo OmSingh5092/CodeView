@@ -10,7 +10,12 @@ const firebaseConfig = {
   };
 
   const googleConfig = {
-
+    clientId: '41880489918-ff5sebqstbkdjru2po7gmgsepqhnuio7.apps.googleusercontent.com', 
+    clientSecret: "-1JWDbVE3ytYo5_qpXwPYHje",
+    apiKey:'AIzaSyDOy1JRRQfHO7TD-vbFuHqxcw4PQiXaUOc',
+    redirectUris:["http://localhost:3000/"],
+    scope: "https://www.googleapis.com/auth/calendar",
+    discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
   }
 
   export {firebaseConfig,googleConfig};
