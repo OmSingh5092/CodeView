@@ -8,6 +8,6 @@ export const signInEndpoints = {
 export const profileEndPoints = {
     getOwnProfile:BASE_URL+"/profile/interviewer/own",
     getOthersProfile:BASE_URL+"/profile/interviewer/others", 
-    updateProfile:BASE_URL+"",
+    updateProfile:BASE_URL+"/profile/interviewer/update",
 
 }

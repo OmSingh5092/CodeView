@@ -5,5 +5,6 @@ const profileCtrl = require('../controllers/profileCtrl')
 const verifyUser = require('../middlewares/verifyMW').user;
 
 router.get('/interviewer/own',verifyUser,profileCtrl.getProfile);
+router.post('/interviewer/update',verifyUser,profileCtrl.updateProfile);
 
 module.exports = router;

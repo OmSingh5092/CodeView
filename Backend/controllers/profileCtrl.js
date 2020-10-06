@@ -19,4 +19,20 @@ const getProfile = async (req,res)=>{
     }
 }
 
-module.exports = {getProfile};
+const updateProfile = (req,res) =>{
+    const id = req.user
+    Interviewer.updateOne({id:id},req.body)
+    .then((doc)=>{
+        return res.status(200).json({
+            success:true,
+            update:doc,
+        })
+    }).catch((err)=>{
+        return res.status(500).json({
+            success:false,
+            msg:"Update not possible",
+        })
+    })
+}
+
+module.exports = {getProfile,updateProfile};

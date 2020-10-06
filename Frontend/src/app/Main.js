@@ -5,6 +5,7 @@ import {firebaseConfig} from './config'
 import firebase from 'firebase'
 
 import LoginScreen from './components/screens/LoginScreen'
+import RegistrationScreen from './components/screens/RegisterScreen'
 
 function LoadingScreen(props){
 
@@ -23,9 +24,7 @@ function Main(props){
 
         const googleSigninScript = document.createElement('script');
         googleSigninScript.src = "https://apis.google.com/js/platform.js";
-        googleSigninScript.onload = ()=>{setScriptLoading(scriptLoading+1)};
-
-        firebase.initializeApp(firebaseConfig);
+        googleSigninScript.onload = ()=>{setScriptLoading(scriptLoading+1)};    
 
         document.body.append(googleSigninScript);
     },[1])
@@ -36,7 +35,7 @@ function Main(props){
             {scriptLoading == scriptCount?<LoadingScreen/>:
             <HashRouter>
                 <Route exact path= "/" component={(LoginScreen)}/>
-                
+                <Route path="/register" component={(RegistrationScreen)}/>
             </HashRouter>}
         </div>
     )

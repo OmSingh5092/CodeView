@@ -43,7 +43,6 @@ const InterviewerDialog = withRouter((props)=>{
                         }
                         
                     })
-                    
                 }
             }else{
                 console.log(data.msg);
