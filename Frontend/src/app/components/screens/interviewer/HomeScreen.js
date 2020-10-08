@@ -46,14 +46,16 @@ function Header(props){
 
 
 
-function HomeScreen(props){
-    const [bodyState,setBodyState] = React.useState('home');  
 
+function HomeScreen(props){
+    const [bodyState,setBodyState] = React.useState('Home');  
+    console.log("Props",props);
     return(
         <div className="root">
 
-            <HashRouter basename="/interviewer">
+            <HashRouter basename="/interviewer" >
                 <Header/>   
+                
                 <Switch>
                     <Route exact path = "/" component = {(PastInterviews)}/>
                     <Route path="/createRoom" component={(CreateRoom)}/>

@@ -6,14 +6,11 @@ import {Add,TextFields,FormatListNumbered, HighlightOff} from '@material-ui/icon
 
 function CreateRoomForm(props){
     const onSubmit = props.onSubmit;
-
+    const data = props.data;
     const [fields, setFields] = React.useState([]);
     const [fieldName, setFieldName] = React.useState("");
     const [fieldType,setFieldType] = React.useState("");
-    var data ={
-        title:"",
-        fields:{}
-    }
+    
 
     return(
         <div style={{display:"flex" , flexDirection:"column", flexWrap:"wrap"}}>
@@ -68,7 +65,7 @@ function CreateRoomForm(props){
                 </div>
                 
                 <div>
-                    <Button onClick={()=>{fields.push({name:fieldName,type:fieldType}); setFieldName(""); setFieldType("") ;console.log(fields)}}  variant="contained" color="primary">
+                    <Button onClick={()=>{fields.push({name:fieldName,type:fieldType}); data.fields = fields; setFieldName(""); setFieldType("") ;}}  variant="contained" color="primary">
                         <Add/> Add
                     </Button>
                 </div>
