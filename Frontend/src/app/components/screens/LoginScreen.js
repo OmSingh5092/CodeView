@@ -8,6 +8,8 @@ import IntervierLogin from '../molecules/InterViewerLogin';
 import JoinRoomForm from '../molecules/JoinRoomForm';
 import GoogleLoginButton from '../atoms/GoogleLoginButton';
 
+import AuthRedirect from '../atoms/AuthRedirect';
+
 import {googleSignIn} from '../../utils/api/controllers/signInCtrl'
 import {getOwnProfile} from '../../utils/api/controllers/profileCtrl'
 
@@ -107,7 +109,7 @@ function LoginScreen(props){
 
     return(
     <div className="body">
-
+        <AuthRedirect/>
         <div style={{
             fontSize:50,
             fontFamily:"Roboto-Black",

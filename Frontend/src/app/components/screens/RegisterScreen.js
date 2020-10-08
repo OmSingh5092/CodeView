@@ -8,6 +8,8 @@ import {withRouter} from 'react-router-dom'
 import {updateProfile} from '../../utils/api/controllers/profileCtrl'
 import {UserData} from '../../utils/localStorage'
 
+import AuthRedirect from '../atoms/AuthRedirect'
+
 function RegisterScreen(props){
 
     const handleSubmit = (data)=>{
@@ -29,6 +31,7 @@ function RegisterScreen(props){
 
     return(
         <div className="root" style={{flexWrap:"wrap"}}>
+            <AuthRedirect/>
             <div style={{fontFamily:"Roboto-Black", fontSize:50, textAlign:"center"}}>
                 Please enter the details.
             </div>
