@@ -1,10 +1,10 @@
 import {createMuiTheme} from '@material-ui/core'
-import {blue,green} from '@material-ui/core/colors'
+import {teal,indigo} from '@material-ui/core/colors'
 
 const appTheme = createMuiTheme({
     palette:{
-        primary:blue,
-        secondary:green
+        primary:indigo,
+        secondary:teal
     },
     typography:{
         fontFamily:"'Roboto-Medium','Roboto-Black'"

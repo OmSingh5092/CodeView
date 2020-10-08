@@ -6,6 +6,9 @@ import firebase from 'firebase'
 
 import LoginScreen from './components/screens/LoginScreen'
 import RegistrationScreen from './components/screens/RegisterScreen'
+import HomeScreen from './components/screens/interviewer/HomeScreen'
+
+import {UserData} from './utils/localStorage'
 
 function LoadingScreen(props){
 
@@ -34,8 +37,11 @@ function Main(props){
         <div>
             {scriptLoading == scriptCount?<LoadingScreen/>:
             <HashRouter>
-                <Route exact path= "/" component={(LoginScreen)}/>
-                <Route path="/register" component={(RegistrationScreen)}/>
+                <Switch>    
+                    <Route exact path= "/" component={(LoginScreen)}/>
+                    <Route path="/register" component={(RegistrationScreen)}/>
+                    <Route path = "/interviewer" component={(HomeScreen)}/>
+                </Switch>
             </HashRouter>}
         </div>
     )
