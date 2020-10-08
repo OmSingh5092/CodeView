@@ -44,6 +44,17 @@ function Header(props){
     )
 }
 
+const CreateRoomButton = withRouter((props)=>{
+    return(
+        <Fab variant="extended" color="secondary"
+            onClick={()=>{props.history.push('createRoom')}}
+        >
+            <Add/>
+            Add Interview Room
+        </Fab>
+    )
+})
+
 function HomeScreen(props){
     const [bodyState,setBodyState] = React.useState('home');  
 
@@ -57,18 +68,11 @@ function HomeScreen(props){
                     <Route path="/createRoom" component={(CreateRoom)}/>
                     <Route path="/profile" component = {(Profile)}/>
                 </Switch>
-
-                {withRouter(
-                    <Fab variant="extended" color="secondary" style={{position:"absolute", bottom:30, right:30}}
-                        onClick={()=>{props.history.push('createRoom')}}
-                    >
-                        <Add/>
-                        Add Interview Room
-                    </Fab>
-                )}
+                <div style={{position:"absolute", bottom:30, right:30}}>
+                    <CreateRoomButton/>
+                </div>
                 
             </HashRouter>
-            
         </div>
     )
 }
