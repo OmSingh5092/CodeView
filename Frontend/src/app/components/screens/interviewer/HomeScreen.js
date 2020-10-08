@@ -2,7 +2,7 @@ import React from 'react'
 import {withRouter, HashRouter, Route, Switch} from 'react-router-dom'
 
 import {AppBar, Breadcrumbs, Button, Fab, IconButton, Toolbar, Typography, Link} from '@material-ui/core'
-import {AccountBox,Language,Notifications,Add,Home} from "@material-ui/icons"
+import {AccountBox,Language,Notifications,Add,Home, Create} from "@material-ui/icons"
 import '../style.css'
 
 import Avatar from '../../../res/icons/coding.png'
@@ -44,16 +44,7 @@ function Header(props){
     )
 }
 
-const CreateRoomButton = withRouter((props)=>{
-    return(
-        <Fab variant="extended" color="secondary"
-            onClick={()=>{props.history.push('createRoom')}}
-        >
-            <Add/>
-            Add Interview Room
-        </Fab>
-    )
-})
+
 
 function HomeScreen(props){
     const [bodyState,setBodyState] = React.useState('home');  
@@ -64,14 +55,10 @@ function HomeScreen(props){
             <HashRouter basename="/interviewer">
                 <Header/>   
                 <Switch>
-                    <Route exact path = "/" componet = {(PastInterviews)}/>
+                    <Route exact path = "/" component = {(PastInterviews)}/>
                     <Route path="/createRoom" component={(CreateRoom)}/>
                     <Route path="/profile" component = {(Profile)}/>
                 </Switch>
-                <div style={{position:"absolute", bottom:30, right:30}}>
-                    <CreateRoomButton/>
-                </div>
-                
             </HashRouter>
         </div>
     )
