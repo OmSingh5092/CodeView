@@ -12,20 +12,14 @@ const createRoom = async (req,res)=>{
 
     const body = req.body;
 
-    const Candidate = mongoose.model('candidate',new Schema({},{collection:"candidates"})) ;
-    const candidate = new Candidate({});   
+    const room = new Room({
+        title:body.title,
+        interviewer:id,
+        fields:body.fields,
+    }) 
 
-    return candidate.save()
+    room.save()
     .then((data)=>{
-        const room = new Room({
-            title:body.title,
-            candidate:data.id,
-            interviewer:id,
-            fields:body.fields,
-        }) 
-
-        return room.save();
-    }).then((data)=>{
         return res.status(200).json({
             success:true,
             room:data
@@ -36,8 +30,7 @@ const createRoom = async (req,res)=>{
             success:true,
             msg:"Internal Server Error!"
         })
-    })
-    
+    })    
 }
 
 

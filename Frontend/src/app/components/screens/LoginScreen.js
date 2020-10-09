@@ -8,10 +8,10 @@ import IntervierLogin from '../molecules/InterViewerLogin';
 import JoinRoomForm from '../molecules/JoinRoomForm';
 import GoogleLoginButton from '../atoms/GoogleLoginButton';
 
-import AuthRedirect from '../atoms/AuthRedirect';
+import AuthRedirect from '../atoms/RedirectRoute';
 
 import {googleSignIn} from '../../utils/api/controllers/signInCtrl'
-import {getOwnProfile} from '../../utils/api/controllers/profileCtrl'
+import {getProfile} from '../../utils/api/controllers/interviewerCtrl'
 
 import {UserData} from '../../utils/localStorage';
 
@@ -35,7 +35,7 @@ const InterviewerDialog = withRouter((props)=>{
                     props.history.push('/register');
                 }else{
                     console.log(UserData.getToken());
-                    getOwnProfile().then((res)=>(res.json()))
+                    getProfile().then((res)=>(res.json()))
                     .then((res)=>{
                         if(res.success){
                             UserData.setProfileData(res.profile);
@@ -109,7 +109,7 @@ function LoginScreen(props){
 
     return(
     <div className="body">
-        <AuthRedirect/>
+        
         <div style={{
             fontSize:50,
             fontFamily:"Roboto-Black",

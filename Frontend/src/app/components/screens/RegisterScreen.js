@@ -5,10 +5,10 @@ import RegistrationForm from '../../components/molecules/RegistrationForm'
 
 import {withRouter} from 'react-router-dom'
 
-import {updateProfile} from '../../utils/api/controllers/profileCtrl'
+import {updateProfile} from '../../utils/api/controllers/interviewerCtrl'
 import {UserData} from '../../utils/localStorage'
 
-import AuthRedirect from '../atoms/AuthRedirect'
+import AuthRedirect from '../atoms/RedirectRoute'
 
 function RegisterScreen(props){
 
@@ -31,7 +31,7 @@ function RegisterScreen(props){
 
     return(
         <div className="root" style={{flexWrap:"wrap"}}>
-            <AuthRedirect/>
+            
             <div style={{fontFamily:"Roboto-Black", fontSize:50, textAlign:"center"}}>
                 Please enter the details.
             </div>

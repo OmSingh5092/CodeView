@@ -54,3 +54,52 @@ export const UserData = function(){
     return {setProfileData,getProfileData,setToken,getToken,setEmail,getEmail,userExists,tokenExists};
 
 }();
+
+export const CandidateData = function(){
+    var data = {
+        roomExists:false,
+        candidateExists:false,
+        roomId:"",
+        candidateId:"",
+    }
+
+    data.roomExists = localStorage.getItem('roomExists');
+    data.candidateExists = localStorage.getItem('candidateExists');
+
+    if(data.roomExists){
+        data.roomId = localStorage.getItem('roomId');
+    }
+    if(data.candidateExists){
+        data.candidateId = localStorage.getItem('candidateId');
+    }
+
+    function setRoomId(newRoomId){
+        data.roomId = newRoomId;
+        localStorage.setItem('roomId',newRoomId);
+        data.roomExists = true;
+    }
+    function getRoomId(){
+        return data.roomId;
+    }
+
+    function setCandidateId(newCandidateId){
+        data.candidateId = newCandidateId;
+        localStorage.setItem('candidateId',newCandidateId);
+        data.candidateExists = true;
+    }
+    function getCandidateId(){
+        return data.idToken;
+    }
+
+    function candidateExists(){
+        return data.candidateExists
+    }
+    function roomExists(){
+        return data.roomExists;
+    }
+
+    return {setRoomId,getRoomId, setCandidateId, getCandidateId, candidateExists, roomExists};
+
+}();
+
+

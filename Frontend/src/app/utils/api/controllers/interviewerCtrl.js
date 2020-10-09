@@ -1,4 +1,4 @@
-import {profileEndPoints} from '../endpoints'
+import {interviewerEndPoints} from '../endpoints'
 import {UserData} from '../../localStorage'
 
 export const updateProfile = (data)=>{
@@ -9,15 +9,15 @@ export const updateProfile = (data)=>{
         body: JSON.stringify(data)
     }
 
-    return fetch(profileEndPoints.updateProfile, requestOptions);
+    return fetch(interviewerEndPoints.updateProfile, requestOptions);
 
 }
 
-export const getOwnProfile = ()=>{
+export const getProfile = ()=>{
     const requestOptions = {
         method:"GET",
         headers:{ "token": UserData.getToken(),'Content-Type': 'application/json'},
     }
 
-    return fetch(profileEndPoints.getOwnProfile, requestOptions);
+    return fetch(interviewerEndPoints.getOwnProfile, requestOptions);
 }

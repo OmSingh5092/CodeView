@@ -11,9 +11,8 @@ const room= new Schema(
             type:Object,
         },
         candidate:{
-            type: Schema.Types.ObjectId,
-             ref: 'candidates'
-        },
+            type:Array,
+        },  
         interviewer:{
             type: Schema.Types.ObjectId,
             ref: 'interviewers'

@@ -11,7 +11,7 @@ import CreateRoom from './CreateRoom';
 import PastInterviews from './PastInterviews';
 import Profile from './Profile';
 
-import AuthRedirect from '../../atoms/AuthRedirect'
+import AuthRedirect from '../../atoms/RedirectRoute'
 
 import {UserData} from '../../../utils/localStorage'
 
@@ -46,15 +46,12 @@ function Header(props){
     )
 }
 
-
-
-
 function HomeScreen(props){
     const [bodyState,setBodyState] = React.useState('Home');  
     console.log("Props",props);
     return(
         <div className="root">
-            <AuthRedirect/>
+            
             <HashRouter basename="/interviewer" >
                 <Header/>   
                 

@@ -1,9 +1,9 @@
 import React from 'react'
 
 import {Redirect} from 'react-router-dom'
-import {UserData} from '../../utils/localStorage'
+import {UserData,CandidateData} from '../../utils/localStorage'
 
-function AuthRedirect(props){
+function RedirectRoute(props){
 
     if(UserData.userExists()){
         return(
@@ -13,12 +13,15 @@ function AuthRedirect(props){
         return(
             <Redirect to="/redirect"/>
         )
+    }else if(CandidateData.roomExists()){
+        return(
+            <Redirect to="/joinRoom"/>
+        )
     }else{
         return(
             <Redirect to="/"/>
         )
     }
-
 }
 
-export default AuthRedirect;
+export default RedirectRoute;

@@ -7,6 +7,7 @@ import firebase from 'firebase'
 import LoginScreen from './components/screens/LoginScreen'
 import RegistrationScreen from './components/screens/RegisterScreen'
 import HomeScreen from './components/screens/interviewer/HomeScreen'
+import JoinRoomScreen from './components/screens/candidate/JoinRoomScreen'
 
 import RoomCandidate from './components/screens/candidate/RoomCandidate';
 import RoomInterviewer from './components/screens/interviewer/RoomInterviewer';
@@ -40,12 +41,9 @@ function Main(props){
                 <Switch>
                     <Route path="/register"><RegistrationScreen/></Route>
                     <Route path = "/interviewer"><HomeScreen/></Route>
+                    <Route path="/joinRoom"><JoinRoomScreen/></Route>
                     <Route path="/"><LoginScreen/></Route>
-                </Switch>
-                
-                
-                
-                
+                </Switch>                
             </HashRouter>
         </div>
     )
