@@ -31,7 +31,7 @@ function RegisterScreen(props){
 
     return(
         <div className="root" style={{flexWrap:"wrap"}}>
-            
+            <AuthRedirect/>
             <div style={{fontFamily:"Roboto-Black", fontSize:50, textAlign:"center"}}>
                 Please enter the details.
             </div>

@@ -51,7 +51,7 @@ function HomeScreen(props){
     console.log("Props",props);
     return(
         <div className="root">
-            
+            <AuthRedirect/>
             <HashRouter basename="/interviewer" >
                 <Header/>   
                 

@@ -4,7 +4,11 @@ import {withRouter} from 'react-router-dom'
 import {Fab,Button} from '@material-ui/core'
 import {FileCopy} from '@material-ui/icons'
 
+import {CandidateData} from '../../../utils/localStorage'
+
 import CandidateDetailsForm from '../../molecules/CandidateDetailsForm'
+
+import AuthRedirect from '../../atoms/RedirectRoute'
 
 function JoinRoomScreen(props){
     const {roomId} = props;
@@ -14,11 +18,13 @@ function JoinRoomScreen(props){
     }
 
     const handleLeaveRoom = ()=>{
-
+        CandidateData.clearCandidate();
+        props.history.push('../');
     }
 
     return(
         <div style={{display:"flex", justifyContent:"center", flexDirection:"column"}}>
+            <AuthRedirect/>
             <div style={{display:"flex", flexDirection:"column"}}>
                 <div style={{fontSize:50, textAlign:"center" }}>
                     Interview Title

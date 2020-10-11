@@ -51,7 +51,15 @@ export const UserData = function(){
         return data.tokenExists;
     }
 
-    return {setProfileData,getProfileData,setToken,getToken,setEmail,getEmail,userExists,tokenExists};
+    function clearUser(){
+        localStorage.removeItem('token');
+        localStorage.removeItem('profile');
+        localStorage.removeItem('email');
+        data.tokenExists = false;
+        data.userExists = false;
+    }
+
+    return {setProfileData,getProfileData,setToken,getToken,setEmail,getEmail,userExists,tokenExists,clearUser};
 
 }();
 
@@ -97,7 +105,14 @@ export const CandidateData = function(){
         return data.roomExists;
     }
 
-    return {setRoomId,getRoomId, setCandidateId, getCandidateId, candidateExists, roomExists};
+    function clearCandidate(){
+        localStorage.removeItem('roomId');
+        localStorage.removeItem('candidateId');
+        data.candidateExists = false;
+        data.roomExists = false;
+    }
+
+    return {setRoomId,getRoomId, setCandidateId, getCandidateId, candidateExists, roomExists,clearCandidate};
 
 }();
 
