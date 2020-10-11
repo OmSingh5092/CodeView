@@ -12,9 +12,11 @@ export const interviewerEndPoints = {
 }
 
 export const roomEndPoints = {
-    createRoom:BASE_URL+"/room/create"
+    createRoom:BASE_URL+"/room/create",
+    checkRoom :BASE_URL+"/room/check"
 }
 
 export const candidateEndPoints = {
-    getCandidate:BASE_URL+"/candidate/profile"
+    getCandidate:BASE_URL+"/candidate/profile",
+    createCandidate:BASE_URL+"/candidate/create"
 }

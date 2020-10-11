@@ -12,7 +12,10 @@ const room= new Schema(
         },
         candidate:{
             type:Array,
-        },  
+        }, 
+        password:{
+            type:String,
+        } ,
         interviewer:{
             type: Schema.Types.ObjectId,
             ref: 'interviewers'

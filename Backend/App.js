@@ -24,7 +24,6 @@ app.use('/api/interviewer',interviewerRoute);
 app.use('/api/room',roomRoute);
 app.use('/api/candidate',candidateRoute);
 
-
 app.listen(config.app.local.port, ()=>{
     console.log("\n\n App listening... \n\n");
 })

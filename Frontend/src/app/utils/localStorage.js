@@ -62,15 +62,14 @@ export const CandidateData = function(){
         roomId:"",
         candidateId:"",
     }
+    data.roomId = localStorage.getItem('roomId');
+    data.candidateId = localStorage.getItem('candidateId');
 
-    data.roomExists = localStorage.getItem('roomExists');
-    data.candidateExists = localStorage.getItem('candidateExists');
-
-    if(data.roomExists){
-        data.roomId = localStorage.getItem('roomId');
+    if(data.roomId){
+        data.roomExists = true
     }
-    if(data.candidateExists){
-        data.candidateId = localStorage.getItem('candidateId');
+    if(data.candidateId){
+        data.candidateExists = true;
     }
 
     function setRoomId(newRoomId){
@@ -88,7 +87,7 @@ export const CandidateData = function(){
         data.candidateExists = true;
     }
     function getCandidateId(){
-        return data.idToken;
+        return data.candidateId;
     }
 
     function candidateExists(){

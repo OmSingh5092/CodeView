@@ -6,5 +6,6 @@ const verifyUser = require('../middlewares/verifyMW').user;
 
 //router.get('/interviewer/own',verifyUser,profileCtrl.getProfile);
 router.post('/create',verifyUser,roomCtrl.createRoom);
+router.get('/check',roomCtrl.checkRoom);
 
 module.exports = router;

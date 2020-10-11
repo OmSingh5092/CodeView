@@ -1,29 +1,51 @@
 import React from 'react'
+import {useEffect} from 'react'
 import {withRouter} from 'react-router-dom';
 
 import {TextField,Button} from '@material-ui/core'
 import {FileCopy} from '@material-ui/icons'
 
 import {CandidateData} from '../../utils/localStorage'
-import {getProfile} from'../../utils/api/controllers/candidateCtrl'
+import {getProfile,createCandidite} from'../../utils/api/controllers/candidateCtrl'
 
 function RoomDetailsForm(props){
-    const {onSubmit,fields} = props;
-
+    const {fields} = props;
     const roomId = CandidateData.getRoomId();
-    const [details,setDetails] = React.useState([]);
+    const [details,setDetails] = React.useState({});
+    
+    useEffect(()=>{
+        if(CandidateData.candidateExists()){
+            console.log("Candidate Detected!");
+            console.log("CandidateId", CandidateData.getCandidateId());
+            getProfile().then((res)=>(res.json()))
+                .then((res)=>{
+                    console.log(res.candidate);
+                if(res.success){
+                    setDetails(res.candidate.details);
+                }else{
+                    
+                }
+            }).catch((err)=>{
+                console.log("Error",err);
+    
+            })
+        }
+    },[1]);
+    
 
-    if(CandidateData.candidateExists()){
-        getProfile().then((res)=>(res.json()))
+    const handleFormSubmit = ()=>{
+        console.log("Data",details);
+        createCandidite(details).then((res)=>(res.json()))
         .then((res)=>{
             if(res.success){
-                details = res.candidate;
+                console.log("Candidate created successfully");
+                console.log("Response",res.candidate._id);
+                CandidateData.setCandidateId(res.candidate._id);
             }else{
-                
+                console.log("Error",res.msg);
             }
         }).catch((err)=>{
             console.log("Error",err);
-
         })
     }
 
@@ -38,11 +60,12 @@ function RoomDetailsForm(props){
                     style={{marginTop:10}}
                     label={item.name}
                     variant="outlined"
-                    value={details[item.name]}
+                    defaultValue={details[item.name]}
+                    onChange={(event)=>{details[item.name] = event.target.value}}
                     inputMode={item.type == "number"? "decimal":"text"}/>
             ))}
 
-            <Button color="primary" variant ="contained" style={{marginTop:10}}>
+            <Button color="primary" variant ="contained" style={{marginTop:10}} onClick={handleFormSubmit}>
                 Submit Details
             </Button>   
         </div>

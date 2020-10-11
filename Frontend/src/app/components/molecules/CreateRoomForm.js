@@ -1,8 +1,8 @@
-import { Button, Chip, MenuItem, TextField, Typography } from '@material-ui/core';
+import { Button, Chip, MenuItem, TextField, Typography,FormControl,InputLabel,OutlinedInput, InputAdornment,IconButton} from '@material-ui/core';
 import React from 'react'
 import {withRouter} from 'react-router-dom';
 
-import {Add,TextFields,FormatListNumbered, HighlightOff} from '@material-ui/icons'
+import {Add,TextFields,FormatListNumbered, Visibility, VisibilityOff} from '@material-ui/icons'
 
 function CreateRoomForm(props){
     const onSubmit = props.onSubmit;
@@ -10,6 +10,7 @@ function CreateRoomForm(props){
     const [fields, setFields] = React.useState([]);
     const [fieldName, setFieldName] = React.useState("");
     const [fieldType,setFieldType] = React.useState("");
+    const [showPassword,setShowPassword] = React.useState(false); 
     
 
     return(
@@ -69,8 +70,25 @@ function CreateRoomForm(props){
                         <Add/> Add
                     </Button>
                 </div>
-                
             </div>
+
+            <FormControl variant="outlined" style={{marginTop:10}}>
+                <InputLabel>Password</InputLabel>
+                <OutlinedInput
+                    type={showPassword? 'text' : 'password'}
+                    onChange={(event)=>{data.password = event.target.value}}
+                    endAdornment={
+                    <InputAdornment position="end">
+                        <IconButton
+                            onClick={()=>setShowPassword(!showPassword)}
+                            edge="end"
+                        >
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                        </IconButton>
+                    </InputAdornment>
+                    }
+                />
+            </FormControl>
         </div>
     )
 }

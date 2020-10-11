@@ -1,7 +1,8 @@
 const Candidate = require('../database/schema/candidate');
 
 const getCandidate = (req,res)=>{
-    const id = req.body.id;
+    console.log("Request",req.headers);
+    const id = req.headers.candidate;
 
     Candidate.findById(id)
     .then((doc)=>{
@@ -16,7 +17,23 @@ const getCandidate = (req,res)=>{
             msg:"Internal Server Error",
         })
     })
-
 }
 
-module.exports = {getCandidate};
+const createCandidate  = (req,res)=>{
+    const body = req.body;
+    const candidate = new Candidate({details:body});
+    candidate.save().then((doc)=>{
+        return res.status(200).json({
+            success:true,
+            candidate:doc
+        })
+    }).catch((err)=>{
+        console.log("Error", err);
+        return res.status(500).json({
+            success:false,
+            msg:"Internal Server error",
+        })
+    })
+}
+
+module.exports = {getCandidate,createCandidate};

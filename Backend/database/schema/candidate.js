@@ -4,7 +4,9 @@ const Schema = mongoose.Schema;
 
 const candidate = new Schema(
     {
-        
+        details:Object
+    },{
+        timestamps:true
     },
     {
         collection:"candidates"

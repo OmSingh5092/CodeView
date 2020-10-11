@@ -12,6 +12,7 @@ import AuthRedirect from '../atoms/RedirectRoute';
 
 import {googleSignIn} from '../../utils/api/controllers/signInCtrl'
 import {getProfile} from '../../utils/api/controllers/interviewerCtrl'
+import {checkRoom} from '../../utils/api/controllers/roomCtrl'
 
 import {UserData} from '../../utils/localStorage';
 
@@ -91,7 +92,7 @@ const CandidateDialog = withRouter((props)=>{
             <DialogTitle>Please enter the details</DialogTitle>
             <DialogContent style={{margin:20}}>
                     <div>
-                        <JoinRoomForm onSubmit = {(data)=>{}}/>
+                        <JoinRoomForm/>
                     </div>
             </DialogContent>
             <DialogActions>
@@ -109,7 +110,7 @@ function LoginScreen(props){
 
     return(
     <div className="body">
-        
+        <AuthRedirect/>
         <div style={{
             fontSize:50,
             fontFamily:"Roboto-Black",

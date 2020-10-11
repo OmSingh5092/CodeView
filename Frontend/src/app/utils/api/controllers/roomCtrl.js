@@ -12,3 +12,12 @@ export const createRoom = (data)=>{
     return fetch(roomEndPoints.createRoom, requestOptions);
 
 }
+
+export const checkRoom = (data)=>{
+    const requestOptions = {
+        method:"GET",
+        headers:{"room":data.room,"password":data.password,'Content-Type': 'application/json',},
+    }
+
+    return fetch(roomEndPoints.checkRoom, requestOptions);
+}

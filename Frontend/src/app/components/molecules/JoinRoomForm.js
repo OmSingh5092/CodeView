@@ -1,13 +1,33 @@
 import React from 'react'
-
+import {withRouter} from 'react-router-dom'
 import { FormControl, TextField,InputLabel, OutlinedInput,InputAdornment,IconButton,Button } from '@material-ui/core'
 import {Visibility,VisibilityOff} from '@material-ui/icons'
+
+import {checkRoom} from '../../utils/api/controllers/roomCtrl'
+import {CandidateData} from '../../utils/localStorage'
 
 function JoinRoomForm(props){
     const onSubmit = props.onSubmit;
     var data = {
-        roomId:"",
+        room:"",
         password:"",
+    }
+
+    const handleSubmit = ()=>{
+        checkRoom(data).then((res)=>(res.json()))
+        .then((res)=>{
+            console.log("Response",res);
+            if(res.success){
+                if(res.verified){
+                    CandidateData.setRoomId(data.roomId);
+                    props.history.push('/joinRoom');
+                }else{
+
+                }
+            }
+        }).catch((err)=>{
+            console.log("Error",err);
+        })
     }
     
 
@@ -21,7 +41,7 @@ function JoinRoomForm(props){
                 style={{marginTop:10}}
                 label="Room Id"
                 variant="outlined"
-                onChange={(event)=>{data.email = event.target.value}}/>
+                onChange={(event)=>{data.room = event.target.value}}/>
             <FormControl variant="outlined" style={{marginTop:10}}>
                 <InputLabel>Password</InputLabel>
                 <OutlinedInput
@@ -38,12 +58,12 @@ function JoinRoomForm(props){
                     </InputAdornment>
                     }
                 />
-        </FormControl>
-        <Button style={{marginTop:10}} onClick={()=>onSubmit(data)} variant="contained" color="secondary">
+            </FormControl>
+        <Button style={{marginTop:10}} onClick={handleSubmit} variant="contained" color="secondary">
                     Join Room
                 </Button>
         </div>
     )
 }
 
-export default JoinRoomForm;
+export default withRouter(JoinRoomForm);
