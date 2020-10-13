@@ -48,6 +48,31 @@ const checkRoom = (req,res)=>{
     })
 }
 
+const getRoom = async (req,res)=>{
+    const id = req.headers.id;
+    try{
+        const room = await Room.findById(id);
+        if(room){
+            return res.status(200).json({
+                success:true,
+                room:room,
+            })
+        }else{
+            return res.status(200).json({
+                success:false,
+                msg:"Room Doesnot Exists!",
+            })
+        }
+        
+    }catch(err){
+        res.status(500).json({
+            success:false,
+            msg:"Room Doesnot exists!"
+        })
+    }
+    
+}
+
 const joinRoom  = (req,res)=>{
     
 
@@ -82,6 +107,7 @@ const checkInterviewer = async (req,res)=>{
             })
         }
     }catch(err){
+        console.log("Error",err);
         return res.status(500).json({
             success:false,
             msg:"Please check the room id",
@@ -91,4 +117,4 @@ const checkInterviewer = async (req,res)=>{
     
 }
 
-module.exports = {createRoom,checkRoom,joinRoom,checkInterviewer};
+module.exports = {createRoom,checkRoom,getRoom,joinRoom,checkInterviewer};

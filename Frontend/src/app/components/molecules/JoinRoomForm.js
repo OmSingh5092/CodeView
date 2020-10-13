@@ -19,7 +19,7 @@ function JoinRoomForm(props){
             console.log("Response",res);
             if(res.success){
                 if(res.verified){
-                    CandidateData.setRoomId(data.roomId);
+                    CandidateData.setRoomId(data.room);
                     props.history.push('/joinRoom');
                 }else{
 

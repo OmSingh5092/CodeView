@@ -20,7 +20,7 @@ const getProfile = async (req,res)=>{
 }
 
 const updateProfile = (req,res) =>{
-    const id = req.user
+    const id = req.user.id;
     Interviewer.updateOne({_id:id},req.body)
     .then((doc)=>{
         return res.status(200).json({

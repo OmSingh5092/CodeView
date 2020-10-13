@@ -7,19 +7,22 @@ import {FileCopy} from '@material-ui/icons'
 
 import {CandidateData} from '../../utils/localStorage'
 import {getProfile,createCandidite} from'../../utils/api/controllers/candidateCtrl'
+import {getRoom} from '../../utils/api/controllers/roomCtrl'
 
 function RoomDetailsForm(props){
-    const {fields} = props;
+    const [fields,setFields] = React.useState([]);
     const roomId = CandidateData.getRoomId();
     const [details,setDetails] = React.useState({});
+    
+    var room;
     
     useEffect(()=>{
         if(CandidateData.candidateExists()){
             console.log("Candidate Detected!");
             console.log("CandidateId", CandidateData.getCandidateId());
             getProfile().then((res)=>(res.json()))
-                .then((res)=>{
-                    console.log(res.candidate);
+            .then((res)=>{
+                console.log(res.candidate);
                 if(res.success){
                     setDetails(res.candidate.details);
                 }else{
@@ -30,6 +33,21 @@ function RoomDetailsForm(props){
     
             })
         }
+
+        //Get fields
+        getRoom(CandidateData.getRoomId()).then((res)=>(res.json()))
+        .then((res)=>{
+            console.log("Response",res);
+            if(res.success){
+                room = res.room;
+                setFields(room.fields);
+                
+            }
+        })
+
+
+
+
     },[1]);
     
 

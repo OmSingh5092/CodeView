@@ -30,3 +30,12 @@ export const checkInterviewer = (roomId)=>{
 
     return fetch(roomEndPoints.checkInterviewer,requestOptions);
 }
+
+export const getRoom =(roomId)=>{
+    const requestOptions = {
+        method:"GET",
+        headers:{"id":roomId,'Content-Type': 'application/json',},
+    }
+
+    return fetch(roomEndPoints.getRoom,requestOptions);
+}

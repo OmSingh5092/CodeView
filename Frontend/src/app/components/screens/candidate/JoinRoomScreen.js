@@ -1,7 +1,7 @@
 import React from 'react'
 import {withRouter} from 'react-router-dom'
 
-import {Fab,Button} from '@material-ui/core'
+import {Fab,Button, Dialog,DialogTitle, DialogContent, CircularProgress,DialogActions} from '@material-ui/core'
 import {FileCopy} from '@material-ui/icons'
 
 import {CandidateData} from '../../../utils/localStorage'
@@ -10,10 +10,40 @@ import CandidateDetailsForm from '../../molecules/CandidateDetailsForm'
 
 import AuthRedirect from '../../atoms/RedirectRoute'
 
+function WaitingDialog(props){
+    const {visibility} =props;
+
+    
+
+    return(
+        <div>
+            <Dialog open={visibility}>
+                <DialogTitle>Waiting for the interviewer to let you in</DialogTitle>
+                <DialogContent>
+                    <CircularProgress
+                        variant="indeterminate"
+                        size={100}
+                        style={{margin:"auto"}}/>
+                    
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={()=>{}}>
+                        Cancle
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </div>
+
+    )
+}
+
 function JoinRoomScreen(props){
     const {roomId} = props;
+    const [showWaitingDialog,setWaitingDialog] = React.useState(false);
+    
 
     const handleJoinRoom = ()=>{
+        setWaitingDialog(true);
 
     }
 
@@ -34,20 +64,18 @@ function JoinRoomScreen(props){
                         Room Id -  
                     </div>
                     <div style={{fontSize:20, textAlign:"center" }}>
-                        51534J1k5f
+                        {CandidateData.getRoomId()}
                     </div>
 
                     <Button onClick={()=>{
-                        navigator.clipboard.writeText("Om Singh");
-
-                        }}>
+                        navigator.clipboard.writeText(CandidateData.getRoomId());}}>
                         <FileCopy/>
                     </Button>
                 </div>
                 
             </div>
             <div style={{display:"flex",flexDirection:"column", alignContent:"center"}}>
-                <CandidateDetailsForm fields ={[{name:"Name",type:"text"},{name:"Phone",type:"number"}]}/>
+                <CandidateDetailsForm/>
             </div>
 
             <Fab variant="extended" color="secondary"  style={{position:"absolute", bottom:30, right:30}}
@@ -60,6 +88,8 @@ function JoinRoomScreen(props){
             >
                 Leave Room
             </Fab>
+
+            <WaitingDialog visibility={showWaitingDialog}/>
             
         </div>
     )

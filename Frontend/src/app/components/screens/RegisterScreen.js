@@ -17,6 +17,7 @@ function RegisterScreen(props){
         console.log("Token",UserData.getToken());
         updateProfile(data).then((res)=>(res.json()))
         .then((res)=>{
+            
             if(res.success){
                 UserData.setProfileData(data);
                 UserData.userExists(true);
