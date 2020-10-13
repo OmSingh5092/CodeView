@@ -8,7 +8,7 @@ const createRoom = async (req,res)=>{
 
     const room = new Room({
         title:body.title,
-        interviewer:id,
+        interviewers:[id],
         password:body.password,
         fields:body.fields,
     }) 
@@ -53,4 +53,42 @@ const joinRoom  = (req,res)=>{
 
 }
 
-module.exports = {createRoom,checkRoom,joinRoom};
+const checkInterviewer = async (req,res)=>{
+    const id = req.user.id;
+    const headers = req.headers;
+
+    const roomId = headers.room_id;
+    console.log("Id",id);
+    console.log("Details",roomId);
+    try{
+        const room = await Room.findById(roomId);
+
+        if(room){
+            var exists  = false;
+            if(room.interviewers.includes(id)){
+                exists = true;
+            }else{
+                exists = false;
+            }
+
+            return res.status(200).json({
+                success:true,
+                exists:exists
+            })
+        }else{
+            return res.status(200).json({
+                success:true,
+                exists:false,
+            })
+        }
+    }catch(err){
+        return res.status(500).json({
+            success:false,
+            msg:"Please check the room id",
+        })
+    }
+    
+    
+}
+
+module.exports = {createRoom,checkRoom,joinRoom,checkInterviewer};

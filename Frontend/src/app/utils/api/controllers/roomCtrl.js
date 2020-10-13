@@ -21,3 +21,12 @@ export const checkRoom = (data)=>{
 
     return fetch(roomEndPoints.checkRoom, requestOptions);
 }
+
+export const checkInterviewer = (roomId)=>{
+    const requestOptions = {
+        method:"GET",
+        headers:{"token":UserData.getToken(),"room_id":roomId,'Content-Type': 'application/json',},
+    }
+
+    return fetch(roomEndPoints.checkInterviewer,requestOptions);
+}

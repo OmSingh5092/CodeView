@@ -24,8 +24,6 @@ function LoadingScreen(props){
     )
 }
 
-
-
 function Main(props){
 
     const [scriptLoading, setScriptLoading] = React.useState(0);
@@ -34,12 +32,12 @@ function Main(props){
 
     },[1])
 
-
     return (
         <div>
             <HashRouter>
                 <Switch>
                     <Route path="/register"><RegistrationScreen/></Route>
+                    <Route path = "/interviewer/room/:id"><RoomInterviewer/></Route>
                     <Route path = "/interviewer"><HomeScreen/></Route>
                     <Route path="/joinRoom"><JoinRoomScreen/></Route>
                     <Route path="/"><LoginScreen/></Route>

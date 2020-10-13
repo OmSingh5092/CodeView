@@ -16,9 +16,8 @@ const room= new Schema(
         password:{
             type:String,
         } ,
-        interviewer:{
-            type: Schema.Types.ObjectId,
-            ref: 'interviewers'
+        interviewers:{
+            type:Array,
         },
     },{
         timestamps:true

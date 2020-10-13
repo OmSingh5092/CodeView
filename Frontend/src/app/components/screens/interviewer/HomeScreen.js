@@ -10,6 +10,7 @@ import Avatar from '../../../res/icons/coding.png'
 import CreateRoom from './CreateRoom';
 import PastInterviews from './PastInterviews';
 import Profile from './Profile';
+import RoomInterviewer from './RoomInterviewer'
 
 import AuthRedirect from '../../atoms/RedirectRoute'
 

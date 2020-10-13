@@ -20,7 +20,9 @@ function CreateRoomScreen(props){
         createRoom(data).then((res)=>(res.json()))
         .then((res)=>{
             if(res.success){
+
                 console.log("Room Created!", res.room);
+                props.history.push('../room/'+res.room._id);
             }else{
                 console.log("Error",res.msg);
             }
@@ -37,7 +39,6 @@ function CreateRoomScreen(props){
                 
             </div>
             <FloatingAction icon = {Done} text="Create" onClick={handleSubmit}/>
-            
             
         </div>
     )

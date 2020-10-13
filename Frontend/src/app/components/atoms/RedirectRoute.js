@@ -11,7 +11,7 @@ function RedirectRoute(props){
         )
     }else if(UserData.tokenExists()){
         return(
-            <Redirect to="/redirect"/>
+            <Redirect to="/register"/>
         )
     }else if(CandidateData.roomExists()){
         return(

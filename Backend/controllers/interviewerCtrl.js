@@ -21,7 +21,7 @@ const getProfile = async (req,res)=>{
 
 const updateProfile = (req,res) =>{
     const id = req.user
-    Interviewer.updateOne({id:id},req.body)
+    Interviewer.updateOne({_id:id},req.body)
     .then((doc)=>{
         return res.status(200).json({
             success:true,
