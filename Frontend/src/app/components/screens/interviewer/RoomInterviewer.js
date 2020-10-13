@@ -7,10 +7,10 @@ import LoadScreen from '../../atoms/LoadScreen'
 import {checkInterviewer} from '../../../utils/api/controllers/roomCtrl'
 
 function InterviewScreen(props){
-
+    const {roomId} = props;
     return(
         <div>
-            <CodeEditor/>
+            <CodeEditor roomId = {roomId}/>
         </div>
     )
 }
@@ -37,7 +37,7 @@ function RoomInterviewer(props){
 
     return(
         <div>
-            {checkStatus?<InterviewScreen/>:<LoadScreen title="Checking the interviewer"/>}
+            {checkStatus?<InterviewScreen roomId = {id}/>:<LoadScreen title="Checking the interviewer"/>}
         </div>
     )
 }

@@ -19,6 +19,12 @@ const room= new Schema(
         interviewers:{
             type:Array,
         },
+        code:{
+            type:String,
+        },
+        notes:{
+            type:String,
+        }
     },{
         timestamps:true
     },

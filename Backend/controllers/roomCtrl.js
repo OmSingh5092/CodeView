@@ -83,8 +83,6 @@ const checkInterviewer = async (req,res)=>{
     const headers = req.headers;
 
     const roomId = headers.room_id;
-    console.log("Id",id);
-    console.log("Details",roomId);
     try{
         const room = await Room.findById(roomId);
 

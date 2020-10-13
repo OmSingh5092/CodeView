@@ -43,8 +43,8 @@ function JoinRoomScreen(props){
     
 
     const handleJoinRoom = ()=>{
-        setWaitingDialog(true);
-
+        //setWaitingDialog(true);
+        props.history.push("../candidate/room/"+CandidateData.getRoomId());
     }
 
     const handleLeaveRoom = ()=>{

@@ -15,6 +15,8 @@ import RoomInterviewer from './components/screens/interviewer/RoomInterviewer';
 import {UserData} from './utils/localStorage'
 import RegisterScreen from './components/screens/RegisterScreen'
 
+import {socket} from './utils/websocket'
+
 function LoadingScreen(props){
 
     return(
@@ -28,7 +30,7 @@ function Main(props){
 
     const [scriptLoading, setScriptLoading] = React.useState(0);
     const scriptCount = 
-    useEffect(()=>{       
+    useEffect(()=>{      
 
     },[1])
 
@@ -38,6 +40,7 @@ function Main(props){
                 <Switch>
                     <Route path="/register"><RegistrationScreen/></Route>
                     <Route path = "/interviewer/room/:id"><RoomInterviewer/></Route>
+                    <Route path = "/candidate/room/:id"><RoomCandidate/></Route>
                     <Route path = "/interviewer"><HomeScreen/></Route>
                     <Route path="/joinRoom"><JoinRoomScreen/></Route>
                     <Route path="/"><LoginScreen/></Route>

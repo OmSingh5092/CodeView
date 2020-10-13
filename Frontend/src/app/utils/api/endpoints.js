@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:8000/api";
+import {backend} from '../../config'
+const BASE_URL = backend.baseUrl;
 
 export const signInEndpoints = {
     googleSignIn:BASE_URL+"/signin/interviewer/google",

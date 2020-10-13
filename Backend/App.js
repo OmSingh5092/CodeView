@@ -1,4 +1,5 @@
 const express = require('express');
+const http = require('http');
 const app = express();
 const config = require('./config');
 const database = require('./database/database');
@@ -24,6 +25,18 @@ app.use('/api/interviewer',interviewerRoute);
 app.use('/api/room',roomRoute);
 app.use('/api/candidate',candidateRoute);
 
-app.listen(config.app.local.port, ()=>{
+const server = http.createServer(app);
+
+//Websocket configuration
+const io = require('socket.io')(server);
+module.exports.io = io;
+const websocket = require('./websocket');
+
+io.on("connection",(socket)=>{
+    console.log("Client Connected...")
+    websocket.codeWebSocket(socket,io);
+})
+
+server.listen(config.app.local.port, ()=>{
     console.log("\n\n App listening... \n\n");
 })
