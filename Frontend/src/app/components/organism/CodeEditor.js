@@ -21,7 +21,7 @@ function CodeEditor(props){
             console.log("Response",res);
             if(res.success){
                 setCode(res.room.code);
-                socket.on("updateCode",(data)=>{
+                socket.on(roomId+"/updateCode",(data)=>{
                     setCode(data);
                     console.log("Received Data", data);
                 })

@@ -10,6 +10,15 @@ export const getProfile = ()=>{
     return fetch(candidateEndPoints.getCandidate, requestOptions);
 }
 
+export const getCandidateProfile = (candidateId)=>{
+    const requestOptions = {
+        method:"GET",
+        headers:{"candidate":candidateId,Accept:"application/json"},
+    }
+
+    return fetch(candidateEndPoints.getCandidate, requestOptions);
+}
+
 export const createCandidite =(data)=>{
     const requestOptions = {
         method:"POST",

@@ -32,7 +32,11 @@ function CreateRoomScreen(props){
     }
 
     return(
-        <div style={{display:"flex", flexDirection:"column",alignContent:"center"}} >
+        <div style={{display:"flex", flexDirection:"column",alignContent:"center", margin:20}} >
+
+            <Typography variant ="h4">
+                Create Room
+            </Typography>
             
             <div style={{display:"flex", justifyContent:"center"}}>
                 <CreateRoomForm data = {data}/>

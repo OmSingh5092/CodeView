@@ -35,6 +35,8 @@ const websocket = require('./websocket');
 io.on("connection",(socket)=>{
     console.log("Client Connected...")
     websocket.codeWebSocket(socket,io);
+    websocket.joinRoomRequestSocket(socket,io);
+    websocket.acceptRoomRequestSocket(socket,io);
 })
 
 server.listen(config.app.local.port, ()=>{

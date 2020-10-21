@@ -15,19 +15,18 @@ function CreateRoomForm(props){
 
     return(
         <div style={{display:"flex" , flexDirection:"column", flexWrap:"wrap"}}>
-            <Typography >
+            <Typography variant="h4">
                 Please enter the details
             </Typography>
             <TextField 
-                style={{margin:10}}
+                style={{margin:10,marginTop:30}}
                 label="Title"
                 variant="outlined"
-                style={{}}
                 onChange={(event)=>{data.title = event.target.value}}/>
 
             
 
-            <div style={{display:"flex",flexWrap:"wrap", width:300}}>
+            <div style={{display:"flex",flexWrap:"wrap", width:300, marginTop:30}}>
                 {fields.map((item,index)=>(
                     <Chip
                         style={{margin:10}}
@@ -39,7 +38,7 @@ function CreateRoomForm(props){
             </div>
 
             <div style={{display:"flex", flexWrap:"wrap", flexDirection:"column",flexGrow:1, marginTop:20}}>
-                <Typography >
+                <Typography variant="h5">
                     Make Candidate Input Fields
                 </Typography>
                 <div style={{display:"flex", marginTop:10, marginBottom:10}}> 
@@ -72,7 +71,7 @@ function CreateRoomForm(props){
                 </div>
             </div>
 
-            <FormControl variant="outlined" style={{marginTop:10}}>
+            <FormControl variant="outlined" style={{marginTop:30}}>
                 <InputLabel>Password</InputLabel>
                 <OutlinedInput
                     type={showPassword? 'text' : 'password'}

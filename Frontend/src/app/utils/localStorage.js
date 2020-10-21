@@ -8,7 +8,7 @@ export const UserData = function(){
     }
 
     data.idToken = localStorage.getItem('token');
-    data.profile = localStorage.getItem('profile');
+    data.profile = JSON.parse(localStorage.getItem('profile'));
     data.email = localStorage.getItem('email');
 
     if(data.profile){
@@ -20,7 +20,7 @@ export const UserData = function(){
 
     function setProfileData(newProfile){
         data.profile = newProfile;
-        localStorage.setItem('profile',newProfile);
+        localStorage.setItem('profile',JSON.stringify(newProfile));
         data.userExists = true;
     }
     function getProfileData(){
