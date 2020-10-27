@@ -3,31 +3,71 @@ import {withRouter,useParams} from 'react-router-dom'
 
 import CodeEditor from '../../organism/CodeEditor'
 import LoadScreen from '../../atoms/LoadScreen'
+import ChatWindow from '../../organism/ChatWindow'
 
 import {checkInterviewer} from '../../../utils/api/controllers/roomCtrl'
 import {socket} from '../../../utils/websocket'
-import { Button, Dialog, DialogActions, DialogTitle } from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogTitle} from '@material-ui/core'
 import {getCandidateProfile} from '../../../utils/api/controllers/candidateCtrl'
+
+//CSS Styles
+import '../style.css'
+
+function Candidate(props){
+
+    return(
+        <div>
+            
+        </div>
+    )
+}
+
+function ActionBar(props){
+    
+    return(
+        <div>
+
+        </div>
+    )
+}
 
 function InterviewScreen(props){
     const {roomId} = props;
     return(
-        <div>
-            Interviewer room
-            <CodeEditor roomId = {roomId}/>
+        <div style={{display:"flex",flexGrow:1}}>
+
+            <div style={{display:"flex", flexGrow:1,flexDirection:"column"}}>
+                Interviewer room
+                
+                <CodeEditor roomId = {roomId}/>
+                
+            </div>
+            <div style={{display:"flex"}}>
+                <ChatWindow roomId = {roomId} isCandidate = {false}/>
+            </div>
+            
         </div>
     )
 }
 
 function JoinCandidateDialog(props){
     const {onDecline,onAccept,candidate,open} = props;
+    const [candidateInfo,setCandidateInfo] = React.useState({});
 
+    useEffect(()=>{
+        getCandidateProfile(candidate).then((res)=>(res.json()))
+        .then((res)=>{
+            if(res.sucess){
+                setCandidateInfo(res.candidate);
+            }
+        })
+    },[1])
     
 
     return (
         <div>
             <Dialog open={open}>
-                <DialogTitle>A candidate is requesting to join room</DialogTitle>
+            <DialogTitle>A candidate is requesting to join room (Candidate id = {candidate})</DialogTitle>
                 <DialogActions>
                     <Button onClick={onAccept}>
                         Accept
@@ -45,7 +85,7 @@ function JoinCandidateDialog(props){
 function RoomInterviewer(props){
     const {id} = useParams();
     const [checkStatus, setCheckStatus] = React.useState(false);
-    const [requestedCandidate,setRequestedCandidate] = React.useState({});
+    const [requestedCandidate,setRequestedCandidate] = React.useState("");
     const [showJoinDialog,setShowJoinDialog] = React.useState(false);
 
     const handleCandidateAccept = ()=>{
@@ -90,7 +130,7 @@ function RoomInterviewer(props){
     },[])
 
     return(
-        <div>
+        <div className="root">
             {checkStatus?<InterviewScreen roomId = {id}/>:<LoadScreen title="Checking the interviewer"/>}
             
             <JoinCandidateDialog open = {showJoinDialog} onAccept={handleCandidateAccept} onDecline = {handleCandidateDecline} candidate = {requestedCandidate}/>

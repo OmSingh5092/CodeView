@@ -1,5 +1,5 @@
-const room = require('./database/schema/room');
 const Room  = require('./database/schema/room');
+const Chat = require('./database/schema/chat');
 
 const codeWebSocket= (socket,io)=>{
     socket.on("code",(data)=>{
@@ -29,4 +29,15 @@ const acceptRoomRequestSocket = (socket,io)=>{
     })
 }
 
-module.exports = {codeWebSocket,joinRoomRequestSocket,acceptRoomRequestSocket};
+const chatRequestSocket = (socket,io)=>{
+    socket.on("chat_receive",(data)=>{
+        
+        const chat = new Chat(data);
+        chat.save().then((doc)=>{
+            io.emit("chat_send/"+data.room,doc);
+        })
+
+    })
+}
+
+module.exports = {codeWebSocket,joinRoomRequestSocket,acceptRoomRequestSocket,chatRequestSocket};

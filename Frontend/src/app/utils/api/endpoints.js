@@ -21,5 +21,10 @@ export const roomEndPoints = {
 
 export const candidateEndPoints = {
     getCandidate:BASE_URL+"/candidate/profile",
-    createCandidate:BASE_URL+"/candidate/create"
+    createCandidate:BASE_URL+"/candidate/create",
+    updateCandidate:BASE_URL+"/candidate/update"
+}
+
+export const chatEndPoints = {
+    getChats:BASE_URL+"/chat/chats/room",
 }

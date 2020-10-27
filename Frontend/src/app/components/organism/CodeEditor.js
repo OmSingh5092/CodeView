@@ -5,11 +5,10 @@ import {getRoom} from '../../utils/api/controllers/roomCtrl'
 
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/theme/material.css';
+import './style.css'
 import {UnControlled as CodeMirror} from 'react-codemirror2' 
 require('codemirror/mode/xml/xml');
 require('codemirror/mode/javascript/javascript');
-
-
 
 function CodeEditor(props){
     const {roomId} = props;
@@ -31,21 +30,21 @@ function CodeEditor(props){
         }).catch((err)=>{
             console.log("Error",err);
         })
-        
     },[1])
 
     return(
-        <div>
+        <div style={{display:"flex", flexGrow:1}}>
             <CodeMirror
                 value={code}
                 options={{
-                    mode: 'xml',
+                    mode: 'java',
                     theme: 'material',
                     lineNumbers: true
                 }}
                 onChange={(editor, data, value) => {
                     socket.emit('code',{code:value,room:roomId});
                 }}
+                scroll = {false}
             />
         </div>
     )

@@ -39,7 +39,7 @@ function WaitingDialog(props){
 
 function JoinRoomScreen(props){
     const roomId = CandidateData.getRoomId();
-    const [showWaitingDialog,setWaitingDialog] = React.useState(false);
+    const [showWaitingDialog,setWaitingDialog] = React.useState(false); 
     
 
     const handleJoinRoom = ()=>{
@@ -88,7 +88,7 @@ function JoinRoomScreen(props){
                 
             </div>
             <div style={{display:"flex",flexDirection:"column", alignContent:"center"}}>
-                <CandidateDetailsForm/>
+                <CandidateDetailsForm  />
             </div>
 
             <Fab variant="extended" color="secondary"  style={{position:"absolute", bottom:30, right:30}}
@@ -103,6 +103,8 @@ function JoinRoomScreen(props){
             </Fab>
 
             <WaitingDialog open={showWaitingDialog} onCancle = {handleCancleJoinRoom}/>
+
+            
             
         </div>
     )

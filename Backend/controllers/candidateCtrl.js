@@ -36,4 +36,22 @@ const createCandidate  = (req,res)=>{
     })
 }
 
-module.exports = {getCandidate,createCandidate};
+const updateCandidate = (req,res)=>{
+    const id = req.headers.candidate;
+    const body = req.body;
+
+    Candidate.updateOne({_id:id},body)
+    .then((doc)=>{
+        return res.status(200).json({
+            success:true,
+            candidate:doc,
+        })
+    }).catch((err)=>{
+        return res.status(500).json({
+            success:false,
+            msg:"Update unsuccessfull!",
+        })
+    })
+}
+
+module.exports = {getCandidate,createCandidate,updateCandidate};

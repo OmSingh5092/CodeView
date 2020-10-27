@@ -28,3 +28,13 @@ export const createCandidite =(data)=>{
 
     return fetch(candidateEndPoints.createCandidate, requestOptions);
 }
+
+export const updateCandidate = (data)=>{
+    const requestOptions = {
+        method:"POST",
+        headers:{candidate:CandidateData.getCandidateId(),'Content-Type': 'application/json'},
+        body:JSON.stringify(data)
+    }
+
+    return fetch(candidateEndPoints.updateCandidate, requestOptions);
+}

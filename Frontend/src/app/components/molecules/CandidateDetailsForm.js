@@ -2,17 +2,18 @@ import React from 'react'
 import {useEffect} from 'react'
 import {withRouter} from 'react-router-dom';
 
-import {TextField,Button} from '@material-ui/core'
+import {TextField,Button, Snackbar} from '@material-ui/core'
 import {FileCopy} from '@material-ui/icons'
 
 import {CandidateData} from '../../utils/localStorage'
-import {getProfile,createCandidite} from'../../utils/api/controllers/candidateCtrl'
+import {getProfile,createCandidite,updateCandidate} from'../../utils/api/controllers/candidateCtrl'
 import {getRoom} from '../../utils/api/controllers/roomCtrl'
 
 function RoomDetailsForm(props){
     const [fields,setFields] = React.useState([]);
     const roomId = CandidateData.getRoomId();
     const [details,setDetails] = React.useState({});
+    const [showSnackbar,setShowSnackbar] = React.useState(false);
     
     var room;
     
@@ -53,18 +54,31 @@ function RoomDetailsForm(props){
 
     const handleFormSubmit = ()=>{
         console.log("Data",details);
-        createCandidite(details).then((res)=>(res.json()))
-        .then((res)=>{
-            if(res.success){
-                console.log("Candidate created successfully");
-                console.log("Response",res.candidate._id);
-                CandidateData.setCandidateId(res.candidate._id);
-            }else{
-                console.log("Error",res.msg);
-            }
-        }).catch((err)=>{
-            console.log("Error",err);
-        })
+
+        if(CandidateData.candidateExists()){
+            updateCandidate(details).then((res)=>(res.json()))
+            .then((res)=>{
+                if(res.success){
+                    setShowSnackbar(true);
+                }
+            }).catch((err)=>{
+                console.log("Error",err);
+            })
+        }else{
+            createCandidite(details).then((res)=>(res.json()))
+            .then((res)=>{
+                if(res.success){
+                    setShowSnackbar(true);
+                    console.log("Candidate created successfully");
+                    console.log("Response",res.candidate._id);
+                    CandidateData.setCandidateId(res.candidate._id);
+                }else{
+                    console.log("Error",res.msg);
+                }
+            }).catch((err)=>{
+                console.log("Error",err);
+            })
+        }
     }
 
     return(
@@ -83,9 +97,15 @@ function RoomDetailsForm(props){
                     inputMode={item.type == "number"? "decimal":"text"}/>
             ))}
 
-            <Button color="primary" variant ="contained" style={{marginTop:10}} onClick={handleFormSubmit}>
+            <Button color="primary" variant ="contained" style={{marginTop:10}} onClick={handleFormSubmit} anch>
                 Submit Details
-            </Button>   
+            </Button> 
+
+            <Snackbar open = {showSnackbar} message = "Details Submitted Successfully!" autoHideDuration={3000} onClose={()=>{setShowSnackbar(false)}}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                  }}/>  
         </div>
     )
 }

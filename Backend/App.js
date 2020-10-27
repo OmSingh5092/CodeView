@@ -18,13 +18,14 @@ const signInRoute = require('./routes/signinRouter');
 const interviewerRoute=require('./routes/interviewerRouter');
 const roomRoute = require('./routes/roomRouter');
 const candidateRoute = require('./routes/candidateRouter')
+const chatRoute = require('./routes/chatRouter');
 
 //Applying routes
 app.use('/api/signin',signInRoute);
 app.use('/api/interviewer',interviewerRoute);
 app.use('/api/room',roomRoute);
 app.use('/api/candidate',candidateRoute);
-
+app.use('/api/chat',chatRoute);
 const server = http.createServer(app);
 
 //Websocket configuration
@@ -37,6 +38,7 @@ io.on("connection",(socket)=>{
     websocket.codeWebSocket(socket,io);
     websocket.joinRoomRequestSocket(socket,io);
     websocket.acceptRoomRequestSocket(socket,io);
+    websocket.chatRequestSocket(socket,io);
 })
 
 server.listen(config.app.local.port, ()=>{
