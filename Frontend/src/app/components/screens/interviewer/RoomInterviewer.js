@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import {withRouter,useParams} from 'react-router-dom'
+import {FileCopy} from '@material-ui/icons'
 
 import CodeEditor from '../../organism/CodeEditor'
 import LoadScreen from '../../atoms/LoadScreen'
@@ -124,6 +125,20 @@ const InterviewScreen = withRouter(function(props){
                     <Typography variant="h4">
                         Interviewer Room
                     </Typography>
+
+                    <div style={{display:"flex", justifyContent:"center",flexGrow:1}}>
+                        <div style={{fontSize:20, textAlign:"center" }}>
+                            Room Id -  
+                        </div>
+                        <div style={{fontSize:20, textAlign:"center" }}>
+                            {roomId}
+                        </div>
+
+                        <Button onClick={()=>{
+                            navigator.clipboard.writeText(roomId);}}>
+                            <FileCopy/>
+                        </Button>
+                    </div>
                 </div>
                 
                 <div style={{display:"flex",margin:10}}>
@@ -270,15 +285,17 @@ function RoomInterviewer(props){
         })
 
         //Pinging server
-        setInterval(()=>{socket.emit("interviewer_status",({room:id,joined:true,interviewer:UserData.getProfileData()._id}))},1000);
+        const interval = setInterval(()=>{socket.emit("interviewer_status",({room:id,joined:true,interviewer:UserData.getProfileData()._id}))},1000);
         
         //Adding event if the tab gets closed
         window.addEventListener("beforeunload", (ev) => {
             socket.emit("interviewer_status",({room:id,joined:false,interviewer:UserData.getProfileData()._id}))
+            clearInterval(interval);
         });
 
         return ()=>{
             socket.emit("interviewer_status",({room:id,joined:false,interviewer:UserData.getProfileData()._id}))
+            clearInterval(interval);
         }
     },[])
 

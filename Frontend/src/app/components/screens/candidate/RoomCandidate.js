@@ -11,7 +11,7 @@ import {socket} from '../../../utils/websocket'
 import { Button, Dialog, DialogActions, DialogTitle, IconButton, Typography, Card} from '@material-ui/core'
 import {getCandidateProfile} from '../../../utils/api/controllers/candidateCtrl'
 
-import {Chat, ExitToApp, People} from '@material-ui/icons'
+import {Chat, ExitToApp, People,FileCopy} from '@material-ui/icons'
 
 import {CandidateData} from '../../../utils/localStorage'
 
@@ -60,15 +60,17 @@ function RoomCandidate(props){
         })
 
         //Pinging server
-        setInterval(()=>{socket.emit("candidate_status",{room:id,joined:true})},1000);
+        const interval = setInterval(()=>{socket.emit("candidate_status",{room:id,joined:true})},1000);
         
 
         //Adding event if the tab gets closed
         window.addEventListener("beforeunload", (ev) => {
             socket.emit("candidate_status",{room:id,joined:false})
+            clearInterval(interval);
         });
 
         return ()=>{
+            clearInterval(interval)
             socket.emit("candidate_status",{room:id,joined:false})
         }
     })
@@ -81,6 +83,20 @@ function RoomCandidate(props){
                     <Typography variant="h4">
                         Candidate Room
                     </Typography>
+
+                    <div style={{display:"flex", justifyContent:"center",flexGrow:1}}>
+                        <div style={{fontSize:20, textAlign:"center" }}>
+                            Room Id -  
+                        </div>
+                        <div style={{fontSize:20, textAlign:"center" }}>
+                            {roomId}
+                        </div>
+
+                        <Button onClick={()=>{
+                            navigator.clipboard.writeText(roomId);}}>
+                            <FileCopy/>
+                        </Button>
+                    </div>
                 </div>
 
                 <div style={{margin:10,}}>
