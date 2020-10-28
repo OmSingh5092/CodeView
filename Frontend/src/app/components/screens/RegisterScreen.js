@@ -12,7 +12,15 @@ import AuthRedirect from '../atoms/RedirectRoute'
 
 function RegisterScreen(props){
 
-    const handleSubmit = (data)=>{
+    var data = {
+        name:"",
+        phone:"",
+        company:"",
+        website:"",
+        photo:"",
+    }
+
+    const handleSubmit = ()=>{
         //updating the profile
         console.log("Token",UserData.getToken());
         updateProfile(data).then((res)=>(res.json()))
@@ -39,7 +47,7 @@ function RegisterScreen(props){
                 Please enter the details.
             </div>
             <div style={{display:"flex",flexDirection:"column" ,flexWrap:"wrap", margin:"auto", alignContent:"center", marginTop:40}}>
-                <RegistrationForm onSubmit={handleSubmit}/>
+                <RegistrationForm data = {data} onSubmit={handleSubmit}/>
             </div>
             
         </div>

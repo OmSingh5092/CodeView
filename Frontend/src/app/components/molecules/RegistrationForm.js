@@ -15,11 +15,12 @@ function ImageUploader(props){
 
 
     useEffect(()=>{
-        if(path == null){
-            return;
+        if(path == ""){
+            return ;
         }
         downloadFile(path).then((url)=>{
             console.log("URL",url);
+            setImage(url);
         })
 
     },[1])
@@ -62,26 +63,8 @@ function ImageUploader(props){
 
 function RegistrationForm(props){
     var {onSubmit,data} = props;
-    if(data == null){
-        data = {
-            name:"",
-            phone:"",
-            company:"",
-            website:"",
-            photo:"",
-    
-        }
-    }
 
     const [imageUploading, setImageUploading] = React.useState(false);    
-
-    useEffect(()=>{
-        if(data == null){
-            
-            return;
-        }
-        
-    },[1])
 
     return(
         <div style={{display:"flex", flexDirection:"column", flexWrap:"wrap"}}>
@@ -113,7 +96,7 @@ function RegistrationForm(props){
                 defaultValue = {data.website}
                 onChange = {(event)=>{data.website = event.target.value}}/>
             <div style={{flexGrow:1}}>
-                <Button variant="contained" color="primary" style={{marginTop:30}} onClick={()=>{onSubmit(data)}}>
+                <Button variant="contained" color="primary" style={{marginTop:30}} onClick={()=>{onSubmit()}}>
                     Submit
                 </Button>
             </div>

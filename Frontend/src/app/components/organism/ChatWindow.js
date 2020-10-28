@@ -10,53 +10,62 @@ import {socket} from '../../utils/websocket'
 import { Close } from '@material-ui/icons'
 
 import {getProfileById} from '../../utils/api/controllers/interviewerCtrl'
+import {parseDate} from '../../utils/timeFormatter'
 
 function Chat(props){
     const {chat} = props; 
-    
+
+    const isSelf = chat.sender == UserData.getProfileData()._id;
+    var chatMarginLeft ;
+    if(isSelf){
+        chatMarginLeft="auto"
+    }else{
+        chatMarginLeft = 0;
+    }
+
     const [info,setInfo] = React.useState({});
     useEffect(()=>{
         if(chat.isCandidate){
             return;
         }
 
+        console.log("Chat",chat);
+
         getProfileById(chat.sender).then((res)=>(res.json()))
         .then((res)=>{
             if(res.success){
-                setInfo(res.profile);
+                setInfo(res.interviewer);
             }
         })
 
     },[1])
 
     return(
-        <div style={{display:"flex",flexWrap:"wrap",margin:10,}}>
-            <Card variant="contained" style={{backgroundColor:"#f7deff"}} >
-                <div style={{display:"flex", flexDirection:"column",margin:10,}}>
+        <div style={{display:"flex",flexWrap:"wrap",margin:10,marginLeft:chatMarginLeft}}>
+            <Card variant="contained" style={{backgroundColor:"#c2cbff"}} >
+                <div style={{display:"flex", flexDirection:"column"}}>
                     <div style={{margin:10}}>
                         {chat.isCandidate?
                             <Typography>
                                 Candidate
                             </Typography>
                             :
-                            <Typography>
+                            <Typography style={{fontSize:10}}>
                                 {info.name}
                             </Typography>
                         }
                     </div>
                     
-                    <Typography >
+                    <Typography style={{marginLeft:10,marginRight:10}} >
                         {chat.message}
                     </Typography>
 
-                    <Typography style={{display:"flex",margin:10}}>
-                        {chat.createdAt}
+                    <Typography style={{display:"flex",margin:10, fontSize:10}}>
+                        {parseDate(chat.createdAt)}
                     </Typography>
 
                 </div>
             </Card>
-            
-            
         </div>
     )
 }
@@ -69,6 +78,12 @@ function SendMessage(props){
 
     var sender;
 
+    if(isCandidate){
+        sender = CandidateData.getCandidateId();
+    }else{
+        sender = UserData.getProfileData()._id;
+    }
+
     const handleSubmit = ()=>{
         const chat = {
             room:roomId,
@@ -77,6 +92,8 @@ function SendMessage(props){
             isCandidate:isCandidate,
             sender:sender,
         }
+
+        console.log("Chat",chat);
 
         socket.emit("chat_receive",chat);
     }
@@ -101,11 +118,7 @@ function SendMessage(props){
     }
 
     useEffect(()=>{
-        if(isCandidate){
-            sender = CandidateData.getCandidateId();
-        }else{
-            sender = UserData.getProfileData()._id;
-        }
+        
     },[1])
 
 
@@ -142,13 +155,13 @@ function ChatWindow(props){
         .then((res)=>{
             console.log("Chat Response",res);
             if(res.success){
-                setChats(res.chats);
+                chats = res.chats;
+                setChats(chats);
             }
         });
 
         socket.on("chat_send/"+roomId,(data)=>{
-            chats = [...chats,data];
-            setChats(chats);
+            setChats([...chats,data]);
         });
     },[1])
 
@@ -161,16 +174,14 @@ function ChatWindow(props){
                     </Typography>
                 </div>
 
-                
-                
-
                 <IconButton onClick={()=>onClose()}>
                     <Close/>
                 </IconButton>
             </div>
-            <div style={{display:"flex",flexGrow:1,flexDirection:"column"}}>
+            <div style={{display:"flex",flexDirection:"column",flexGrow:1,height:0, overflowY:"scroll"}}> 
                 {chats.map((item,index)=>(
                     <Chat chat = {item}/>
+                    
                 ))}
             </div>
             <div>
