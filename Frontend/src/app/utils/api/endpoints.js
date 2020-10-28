@@ -18,7 +18,8 @@ export const roomEndPoints = {
     checkInterviewer: BASE_URL+"/room/check/interviewer",
     getRoom :BASE_URL+"/room/get",
     getRoomsByInterviewer:BASE_URL+"/room/get/interviewer",
-    addInterviewer: BASE_URL+"/room/add/interviewer"
+    addInterviewer: BASE_URL+"/room/add/interviewer",
+    removeInterviewer: BASE_URL+"/room/remove/interviewer",
 }
 
 export const candidateEndPoints = {

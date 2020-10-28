@@ -49,6 +49,15 @@ export const addInterviewer = (roomId) =>{
     return fetch(roomEndPoints.addInterviewer, requestOptions);
 }
 
+export const removeInterviewer = (roomId)=>{
+    const requestOptions = {
+        method:"POST",
+        headers:{ "token": UserData.getToken(),"room":roomId,'Content-Type': 'application/json',},
+    }
+
+    return fetch(roomEndPoints.removeInterviewer, requestOptions);
+}
+
 export const getRoomsByInterviewer = ()=>{
     const requestOptions = {
         method:"GET",

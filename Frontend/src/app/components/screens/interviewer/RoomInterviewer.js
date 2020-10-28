@@ -6,7 +6,7 @@ import LoadScreen from '../../atoms/LoadScreen'
 import ChatWindow from '../../organism/ChatWindow'
 import InterviewerWindow from '../../organism/InterviewerWindow'
 
-import {checkInterviewer} from '../../../utils/api/controllers/roomCtrl'
+import {checkInterviewer,removeInterviewer} from '../../../utils/api/controllers/roomCtrl'
 import {socket} from '../../../utils/websocket'
 import { Button, Dialog, DialogActions, DialogTitle, IconButton, Typography, Card} from '@material-ui/core'
 import {getCandidateProfile} from '../../../utils/api/controllers/candidateCtrl'
@@ -52,7 +52,7 @@ function ActionBar(props){
             <IconButton onClick = {()=>onButtonClick(2)}>
                 <ExitToApp/>
             </IconButton>
-            <Button color="alert">
+            <Button onClick = {()=>onButtonClick(3)}>
                 Leave Room
             </Button>
         </Card>
@@ -64,6 +64,15 @@ const InterviewScreen = withRouter(function(props){
 
     const [chatWindow,setChatWindow] = React.useState(false);
     const [peopleWindow,setPeopleWindow] = React.useState(false);
+    
+    const handleLeaveRoom = ()=>{
+        removeInterviewer(roomId).then((res)=>(res.json()))
+        .then((res)=>{
+            if(res.success){
+                history.push('../../');
+            }
+        })
+    }
 
 
     return(
@@ -89,6 +98,8 @@ const InterviewScreen = withRouter(function(props){
                                 setPeopleWindow(true);
                             }else if(pos == 2){
                                 history.push('../../');
+                            }else if(pos == 3){
+                                handleLeaveRoom();
                             }
                         }
                     }/>

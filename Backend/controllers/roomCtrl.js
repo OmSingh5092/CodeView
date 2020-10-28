@@ -125,6 +125,26 @@ const addInterviewer = (req,res)=>{
     })
 }
 
+const removeInterviewer = (req,res)=>{
+    const id = req.user.id;
+    const room = req.headers.room;
+
+    Room.updateOne({_id:room},{$pull:{interviewers:id}})
+    .then((doc)=>{
+        return res.status(200).json({
+            success:true,
+            msg:"Update Successfull",
+        })
+    }).catch((err)=>{
+        console.log("Error",err);
+
+        return res.status(500).json({
+            success:false,
+            msg:"Update unsuccessfull",
+        })
+    })
+}
+
 const getRoomsByInterviewer = (req,res)=>{
     const id = req.user.id;
     
@@ -144,4 +164,4 @@ const getRoomsByInterviewer = (req,res)=>{
     })
 }
 
-module.exports = {createRoom,checkRoom,getRoom,checkInterviewer,addInterviewer,getRoomsByInterviewer};
+module.exports = {createRoom,checkRoom,getRoom,checkInterviewer,removeInterviewer,addInterviewer,getRoomsByInterviewer};
