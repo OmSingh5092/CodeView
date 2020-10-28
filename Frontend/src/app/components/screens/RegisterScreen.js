@@ -5,7 +5,7 @@ import RegistrationForm from '../../components/molecules/RegistrationForm'
 
 import {withRouter} from 'react-router-dom'
 
-import {updateProfile} from '../../utils/api/controllers/interviewerCtrl'
+import {updateProfile,getProfile, getProfileById} from '../../utils/api/controllers/interviewerCtrl'
 import {UserData} from '../../utils/localStorage'
 
 import AuthRedirect from '../atoms/RedirectRoute'
@@ -17,9 +17,11 @@ function RegisterScreen(props){
         console.log("Token",UserData.getToken());
         updateProfile(data).then((res)=>(res.json()))
         .then((res)=>{
-            
+            return getProfile().then((res)=>(res.json()))
+        }).then((res)=>{
             if(res.success){
-                UserData.setProfileData(data);
+                console.log("Response",res);
+                UserData.setProfileData(res.profile);
                 UserData.userExists(true);
                 props.history.push('/interviewer');
             }else{

@@ -111,8 +111,21 @@ const checkInterviewer = async (req,res)=>{
             msg:"Please check the room id",
         })
     }
-    
-    
 }
 
-module.exports = {createRoom,checkRoom,getRoom,joinRoom,checkInterviewer};
+const addInterviewer = (req,res)=>{
+    const id = req.user.id;
+    const room = req.headers.room;
+    
+    Room.updateOne({_id:room},{$push:{interviewers:id}})
+    .then((doc)=>{
+        return res.status(200).json({
+            success:true,
+            msg:"Update Successfull",
+        })
+    }).catch((err)=>{
+        console.log("Error",err);
+    })
+}
+
+module.exports = {createRoom,checkRoom,getRoom,joinRoom,checkInterviewer,addInterviewer};

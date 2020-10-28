@@ -58,9 +58,9 @@ function SendMessage(props){
 
     useEffect(()=>{
         if(isCandidate){
-            sender = UserData.getProfileData()._id;
-        }else{
             sender = CandidateData.getCandidateId();
+        }else{
+            sender = UserData.getProfileData()._id;
         }
     },[1])
 
@@ -90,7 +90,7 @@ function SendMessage(props){
 }
 
 function ChatWindow(props){
-    const {roomId,isCandidate} = props;
+    const {roomId,isCandidate,onClose} = props;
     var [chats,setChats] = React.useState([]);
 
     useEffect(()=>{

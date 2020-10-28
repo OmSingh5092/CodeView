@@ -1,5 +1,6 @@
 const Room  = require('./database/schema/room');
 const Chat = require('./database/schema/chat');
+const Interviewer = require('./database/schema/interviewer');
 
 const codeWebSocket= (socket,io)=>{
     socket.on("code",(data)=>{
@@ -40,4 +41,36 @@ const chatRequestSocket = (socket,io)=>{
     })
 }
 
-module.exports = {codeWebSocket,joinRoomRequestSocket,acceptRoomRequestSocket,chatRequestSocket};
+const interviewerRoomRequestSocket = (socket,io)=>{
+    socket.on("request_interviewer",(data)=>{
+        const {room,email} = data;
+
+        Interviewer.findOne({email:email})
+        .then((doc)=>{
+            console.log("Interviewer",doc);
+            if(doc){
+                io.emit("interviewer_wait/"+doc._id,data);
+            }else{
+                io.emit("interviewer_wait_response/"+room,{res:false, msg:"Email not valid!"});
+            }
+        })
+
+        
+    })
+}
+
+const interviewerAcceptRoomRequest = (socket,io)=>{
+    socket.on("interviewer_accept",(data)=>{
+        const {room,res,interviewer} = data;
+
+        if(!res){
+            data["msg"] = "Interviewer rejected the request!"
+        }
+        //Emitting the request response.
+        io.emit("interviewer_wait_response/"+room,data);
+
+        
+    })
+}
+
+module.exports = {codeWebSocket,joinRoomRequestSocket,acceptRoomRequestSocket,chatRequestSocket,interviewerRoomRequestSocket,interviewerAcceptRoomRequest};

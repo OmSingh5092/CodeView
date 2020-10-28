@@ -4,11 +4,14 @@ import {withRouter,useParams} from 'react-router-dom'
 import CodeEditor from '../../organism/CodeEditor'
 import LoadScreen from '../../atoms/LoadScreen'
 import ChatWindow from '../../organism/ChatWindow'
+import InterviewerWindow from '../../organism/InterviewerWindow'
 
 import {checkInterviewer} from '../../../utils/api/controllers/roomCtrl'
 import {socket} from '../../../utils/websocket'
-import { Button, Dialog, DialogActions, DialogTitle} from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogTitle, IconButton} from '@material-ui/core'
 import {getCandidateProfile} from '../../../utils/api/controllers/candidateCtrl'
+
+import {Chat, People} from '@material-ui/icons'
 
 //CSS Styles
 import '../style.css'
@@ -23,28 +26,62 @@ function Candidate(props){
 }
 
 function ActionBar(props){
+    const {onButtonClick}  = props;
     
     return(
-        <div>
-
+        <div style={{display:"flex"}}>
+            <IconButton onClick={()=>{onButtonClick(0)}}>
+                <Chat/>
+            </IconButton>
+            <IconButton onClick = {()=>onButtonClick(1)}>
+                <People/>
+            </IconButton>
         </div>
     )
 }
 
 function InterviewScreen(props){
     const {roomId} = props;
-    return(
-        <div style={{display:"flex",flexGrow:1}}>
 
-            <div style={{display:"flex", flexGrow:1,flexDirection:"column"}}>
-                Interviewer room
-                
-                <CodeEditor roomId = {roomId}/>
-                
-            </div>
+    const [chatWindow,setChatWindow] = React.useState(false);
+    const [peopleWindow,setPeopleWindow] = React.useState(false);
+
+
+    return(
+        <div style={{display:"flex",flexGrow:1,flexDirection:"column"}}>
             <div style={{display:"flex"}}>
-                <ChatWindow roomId = {roomId} isCandidate = {false}/>
+                Interviewer Room
+
+                <div>
+                    <ActionBar onButtonClick={
+                        (pos)=>{
+                            if(pos == 0){
+                                setChatWindow(true);
+                            }else if(pos == 1){
+                                setPeopleWindow(true);
+                            }
+                        }
+                    }/>
+                </div>
             </div>
+
+            <div style={{display:"flex"}}>
+                <div style={{display:"flex", flexGrow:1,flexDirection:"column"}}>
+                    
+                    <CodeEditor roomId = {roomId}/>
+
+                    <div style={{display:"flex"}}>
+                        <InterviewerWindow roomId = {roomId} isCandidate = {false} onClose = {()=>{setPeopleWindow(false)}}/>
+                    </div>
+
+                    
+                </div>
+                <div style={{display:"flex"}}>
+                    <ChatWindow roomId = {roomId} isCandidate = {false} onClose={()=>{setChatWindow(false)}}/>
+                </div>
+            </div>
+
+            
             
         </div>
     )
@@ -83,10 +120,12 @@ function JoinCandidateDialog(props){
 }
 
 function RoomInterviewer(props){
+
     const {id} = useParams();
     const [checkStatus, setCheckStatus] = React.useState(false);
     const [requestedCandidate,setRequestedCandidate] = React.useState("");
     const [showJoinDialog,setShowJoinDialog] = React.useState(false);
+
 
     const handleCandidateAccept = ()=>{
         socket.emit("accept",({room:id, candidate:requestedCandidate, res:true}));

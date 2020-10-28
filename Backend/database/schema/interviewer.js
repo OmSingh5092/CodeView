@@ -21,7 +21,7 @@ const interviewer = new Schema(
         },
         photo:{
             type:String,
-        }
+        },
     },{
         timestamps:true
     },

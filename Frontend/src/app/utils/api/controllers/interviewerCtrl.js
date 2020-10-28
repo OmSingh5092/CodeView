@@ -21,3 +21,11 @@ export const getProfile = ()=>{
 
     return fetch(interviewerEndPoints.getOwnProfile, requestOptions);
 }
+
+export const getProfileById = (id)=>{
+    const requestOptions = {
+        method:"GET",
+        headers:{ "id": id,'Content-Type': 'application/json'},
+    }
+    return fetch(interviewerEndPoints.getOthersProfile, requestOptions);
+}

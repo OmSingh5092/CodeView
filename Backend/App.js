@@ -39,6 +39,8 @@ io.on("connection",(socket)=>{
     websocket.joinRoomRequestSocket(socket,io);
     websocket.acceptRoomRequestSocket(socket,io);
     websocket.chatRequestSocket(socket,io);
+    websocket.interviewerAcceptRoomRequest(socket,io);
+    websocket.interviewerRoomRequestSocket(socket,io);
 })
 
 server.listen(config.app.local.port, ()=>{

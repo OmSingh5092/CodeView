@@ -8,7 +8,7 @@ export const signInEndpoints = {
 
 export const interviewerEndPoints = {
     getOwnProfile:BASE_URL+"/interviewer/profile",
-    getOthersProfile:BASE_URL+"/interviewer/others", 
+    getOthersProfile:BASE_URL+"/interviewer/profile/others", 
     updateProfile:BASE_URL+"/interviewer/update",
 }
 
@@ -16,7 +16,8 @@ export const roomEndPoints = {
     createRoom:BASE_URL+"/room/create",
     checkRoom :BASE_URL+"/room/check",
     checkInterviewer: BASE_URL+"/room/check/interviewer",
-    getRoom :BASE_URL+"/room/get"
+    getRoom :BASE_URL+"/room/get",
+    addInterviewer: BASE_URL+"/room/add/interviewer"
 }
 
 export const candidateEndPoints = {
