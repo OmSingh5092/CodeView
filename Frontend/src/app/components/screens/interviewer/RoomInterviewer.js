@@ -109,16 +109,16 @@ const InterviewScreen = withRouter(function(props){
             <div style={{display:"flex",flexGrow:1}}>
                 <div style={{display:"flex", flexGrow:1,flexDirection:"column"}}>
                     
-                    <div style={{display:"flex",flexGrow:1}}>
+                    <div style={{display:"flex",flexGrow:1,margin:10}}>
                         <CodeEditor roomId = {roomId}/>
 
                     </div>
                     
                     {peopleWindow?
-                    <div style={{display:"flex"}}>
+                    <div style={{display:"flex",padding:5,margin:5}}>
                         <InterviewerWindow roomId = {roomId} isCandidate = {false} onClose = {()=>{setPeopleWindow(false)}}/>
                     </div>
-                    :<div/>}
+                    :<div style={{display:"flex"}}/>}
                     
                     
                 </div>

@@ -111,7 +111,7 @@ function InterviewerWindow(props){
 
     return(
         
-        <div style={{display:"flex",flexDirection:"column",flexGrow:1, padding:10,margin:5,borderStyle:"solid" ,borderRadius:10}}>
+        <div style={{display:"flex",flexDirection:"column",flexGrow:1,borderStyle:"solid" ,borderRadius:10,padding:10}}>
             <div style={{display:"flex"}}>
 
                 <Typography style={{display:"flex", flexGrow:1}} variant="h4">

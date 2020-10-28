@@ -198,7 +198,7 @@ function ChatWindow(props){
     },[1])
 
     return(
-        <div style={{display:"flex", flexDirection:"column",margin:5, padding:10, borderStyle:"solid", borderRadius:10}}>
+        <div style={{display:"flex",flexDirection:"column",margin:5, padding:10, borderStyle:"solid", borderRadius:10}}>
             <div style={{display:"flex"}}>
                 <div style={{display:"flex",flexGrow:1}}>
                     <Typography variant="h4">

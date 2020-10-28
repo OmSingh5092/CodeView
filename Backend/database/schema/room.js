@@ -22,6 +22,9 @@ const room= new Schema(
         code:{
             type:String,
         },
+        language:{
+            type:Number,
+        },
         notes:{
             type:String,
         }
