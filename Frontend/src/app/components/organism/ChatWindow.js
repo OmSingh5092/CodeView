@@ -7,21 +7,34 @@ import {uploadFile} from '../../utils/firebase/storage'
 
 import {UserData,CandidateData} from '../../utils/localStorage'
 import {socket} from '../../utils/websocket'
-import { Close } from '@material-ui/icons'
+import { AttachFile, Close, CloudDownload, Delete, Send } from '@material-ui/icons'
 
 import {getProfileById} from '../../utils/api/controllers/interviewerCtrl'
 import {parseDate} from '../../utils/timeFormatter'
 
 function Chat(props){
     const {chat} = props; 
+    var isSelf;
+    var backColor = "#c2cbff";
 
-    const isSelf = chat.sender == UserData.getProfileData()._id;
+    if(chat.isCandidate){
+        backColor = "#9effb8"
+    }
+    if(UserData.getProfileData()){
+        isSelf = chat.sender == UserData.getProfileData()._id;
+    }else if(chat.isCandidate){
+        isSelf = true;
+    }else{
+        isSelf = false;
+    }
+
     var chatMarginLeft ;
     if(isSelf){
         chatMarginLeft="auto"
     }else{
         chatMarginLeft = 0;
     }
+    
 
     const [info,setInfo] = React.useState({});
     useEffect(()=>{
@@ -40,13 +53,17 @@ function Chat(props){
 
     },[1])
 
+    const handleDownload= ()=>{
+        window.open(chat.media,"_blank");
+    }
+
     return(
         <div style={{display:"flex",flexWrap:"wrap",margin:10,marginLeft:chatMarginLeft}}>
-            <Card variant="contained" style={{backgroundColor:"#c2cbff"}} >
+            <Card variant="contained" style={{backgroundColor:backColor}} >
                 <div style={{display:"flex", flexDirection:"column"}}>
                     <div style={{margin:10}}>
                         {chat.isCandidate?
-                            <Typography>
+                            <Typography style={{fontSize:10}}>
                                 Candidate
                             </Typography>
                             :
@@ -57,9 +74,17 @@ function Chat(props){
                     </div>
                     
                     <Typography style={{marginLeft:10,marginRight:10}} >
-                        {chat.message}
+                        {chat.message} 
                     </Typography>
 
+                    {chat.media?
+                        <IconButton href={chat.media}>
+                            <CloudDownload/>
+                        </IconButton>
+                        :
+                        <div/>
+                    }
+                    
                     <Typography style={{display:"flex",margin:10, fontSize:10}}>
                         {parseDate(chat.createdAt)}
                     </Typography>
@@ -123,23 +148,30 @@ function SendMessage(props){
 
 
     return(
-        <div>
-            <div>
+        <div style={{display:"flex", flexDirection:"column"}}>
+            <div style={{display:"flex",margin:10}}>
             <TextField
-                onChange={(event)=>{setText(event.target.value)}}/>
-            <Button onClick = {handleSubmit}>
+                label="Type Message"
+                style={{display:"flex", flexGrow:1,marginRight:10}}
+                onChange={(event)=>{setText(event.target.value)}}
+                variant="outlined"/>
+            <Button onClick = {handleSubmit} variant="contained" color ="primary" style={{display:"flex",flexWrap:"wrap"}}
+                endIcon={<Send/>}
+                >
                 Send
             </Button>
             </div>
 
-            <div>
-                Attach File
+            <div style={{display:"flex", margin:10}}>
+                <AttachFile/>
                 <Input type="file" onChange={handleAttach}/>
                 {progress?<CircularProgress/>:<div/>}
-                {media?<div>File Attached</div>:<div/>}
-                <Button onClick = {handleAttachRemove}>
-                    Remove File
-                </Button>
+                {media?
+                <IconButton onClick = {handleAttachRemove}>
+                    <Delete/>
+                </IconButton>
+                :<div/>}
+                
             </div>
             
         </div>
@@ -184,7 +216,7 @@ function ChatWindow(props){
                     
                 ))}
             </div>
-            <div>
+            <div style={{display:"flex"}}>
                 <SendMessage roomId ={roomId} isCandidate = {isCandidate}/>
             </div>
         </div>

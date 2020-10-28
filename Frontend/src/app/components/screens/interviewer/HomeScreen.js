@@ -20,6 +20,10 @@ import {UserData} from '../../../utils/localStorage'
 import { socket } from '../../../utils/websocket'
 import {addInterviewer} from '../../../utils/api/controllers/roomCtrl'
 
+import {GoogleLogout} from 'react-google-login'
+
+import {googleConfig} from '../../../config'
+
 function RequestMenu(props){
     const {open,requests,onAccept,onReject, onClose,anchor} = props;
 
@@ -96,6 +100,11 @@ const  Header = withRouter(function(props){
         socket.emit("interviewer_accept",{room:request.room,interviewer:UserData.getProfileData()._id,res:false,});
     }
 
+    const handleLogout = ()=>{
+        UserData.clearUser();
+        history.push('../');
+    }
+
 
     return(
         <AppBar position="static" style={{maxHeight:130}}>
@@ -127,6 +136,22 @@ const  Header = withRouter(function(props){
                             <Notifications/>
                         </Badge>
                     </IconButton>
+
+                    <GoogleLogout
+                            clientId={googleConfig.clientId}
+                            render={
+                                (renderProps)=>(
+                                    <Button color="inherit" onClick={renderProps.onClick} disabled ={renderProps.disabled}>
+                                        Logout
+                                    </Button>
+                                )
+                            }
+                            onLogoutSuccess={handleLogout}
+                        >
+
+                        </GoogleLogout>
+
+                    
 
                     <RequestMenu anchor ={requestMenu} onAccept={handleRequestAccept} onReject={handleRequestReject} requests={requests} open = {Boolean(requestMenu)} onClose= {()=>{setRequestMenu(null)}}/>
                 </div>
