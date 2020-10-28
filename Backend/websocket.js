@@ -17,7 +17,7 @@ const joinRoomRequestSocket = (socket,io)=>{
     socket.on("request",(data)=>{
         const {room,candidate,waiting} = data; 
         console.log("Room",data);
-        io.emit("wait/"+room, data);        
+        io.emit("wait/"+room, data); 
     })
 }
 
@@ -27,6 +27,24 @@ const acceptRoomRequestSocket = (socket,io)=>{
         console.log("Accept",data);
         //Res == boolean value
         io.emit("waitResponse/"+room,res);
+    })
+}
+
+const candidateStatusSocket = (socket,io)=>{
+    socket.on("candidate_status",(data)=>{
+
+        console.log("Candidate Status",data);
+        const {room,joined} = data;
+
+        io.emit("candidate_status/"+room,(data));
+    })
+}
+
+const interviewerStatusSocket = (socket,io)=>{
+    socket.on("interviewer_status",(data)=>{
+        const {room,joined,interviewer} = data;
+
+        io.emit("interviewer_status/"+room,(data));
     })
 }
 
@@ -73,4 +91,6 @@ const interviewerAcceptRoomRequest = (socket,io)=>{
     })
 }
 
-module.exports = {codeWebSocket,joinRoomRequestSocket,acceptRoomRequestSocket,chatRequestSocket,interviewerRoomRequestSocket,interviewerAcceptRoomRequest};
+module.exports = {codeWebSocket,joinRoomRequestSocket,acceptRoomRequestSocket,
+    chatRequestSocket,interviewerRoomRequestSocket,interviewerAcceptRoomRequest,
+interviewerStatusSocket,candidateStatusSocket};

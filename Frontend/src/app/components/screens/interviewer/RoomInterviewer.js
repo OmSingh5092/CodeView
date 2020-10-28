@@ -6,12 +6,16 @@ import LoadScreen from '../../atoms/LoadScreen'
 import ChatWindow from '../../organism/ChatWindow'
 import InterviewerWindow from '../../organism/InterviewerWindow'
 
+import Online from '../../../res/icons/live.png';
+import Offline from '../../../res/icons/offline.png'
+
 import {checkInterviewer,removeInterviewer} from '../../../utils/api/controllers/roomCtrl'
 import {socket} from '../../../utils/websocket'
-import { Button, Dialog, DialogActions, DialogTitle, IconButton, Typography, Card} from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogTitle, IconButton, Typography, Card, Menu} from '@material-ui/core'
 import {getCandidateProfile} from '../../../utils/api/controllers/candidateCtrl'
+import {UserData} from '../../../utils/localStorage'
 
-import {Chat, ExitToApp, People} from '@material-ui/icons'
+import {Chat, ExitToApp, People, Person} from '@material-ui/icons'
 
 //CSS Styles
 import '../style.css'
@@ -23,13 +27,15 @@ function CandidateBar(props){
         <div>
             {isJoined?
             <div style={{display:"flex"}}>
+                <img src ={Online} style={{height:20,width:20}}/>
                 <Typography>
                     Candidate is Live..
                 </Typography>
 
             </div>
             :
-            <div>
+            <div style={{display:"flex"}}>
+                <img src ={Offline} style={{height:20,width:20}}/>
                 <Typography>
                     Candidate is not live
                 </Typography>
@@ -39,10 +45,34 @@ function CandidateBar(props){
 }
 
 function ActionBar(props){
-    const {onButtonClick}  = props;
+    const {onButtonClick,candidateId,joined}  = props;
+    const [anchor,setAnchor] = React.useState(null);
+    const [candidateDetails,setDetails] = React.useState([]);
+
+    const loadDetails = ()=>{
+        getCandidateProfile(candidateId).then((res)=>(res.json()))
+        .then((res)=>{
+            if(res.success){
+                var details = [];
+
+                for(const [key,value] of Object.entries(res.candidate.details)){
+                    details.push([key,value]);
+                }
+                setDetails(details);
+            }
+        })
+    }
     
     return(
-        <Card>
+        <Card> 
+            {joined?
+                <IconButton onClick = {(event)=>{setAnchor(event.currentTarget); loadDetails()}}>
+                    <Person/>
+                </IconButton>
+                :
+                <div/>
+            }
+            
             <IconButton onClick={()=>{onButtonClick(0)}}>
                 <Chat/>
             </IconButton>
@@ -55,12 +85,22 @@ function ActionBar(props){
             <Button onClick = {()=>onButtonClick(3)}>
                 Leave Room
             </Button>
+
+            <Menu open ={Boolean(anchor)} anchorEl={anchor} onClose={()=>{setAnchor(null)}}>
+                <div style={{margin:20}}>
+                    {candidateDetails.map((item,index)=>(
+                        <div>
+                            {item[0]}  =  {item[1]}
+                        </div>
+                    ))}
+                </div>
+            </Menu>
         </Card>
     )
 }
 
 const InterviewScreen = withRouter(function(props){
-    const {roomId,candidateJoined,history} = props;
+    const {roomId,candidateJoined,history,candidateId} = props;
 
     const [chatWindow,setChatWindow] = React.useState(false);
     const [peopleWindow,setPeopleWindow] = React.useState(false);
@@ -72,6 +112,8 @@ const InterviewScreen = withRouter(function(props){
                 history.push('../../');
             }
         })
+
+        socket.emit("interviewer_status",({room:roomId,joined:false,interviewer:UserData.getProfileData()._id}))
     }
 
 
@@ -97,12 +139,15 @@ const InterviewScreen = withRouter(function(props){
                             }else if(pos == 1){
                                 setPeopleWindow(true);
                             }else if(pos == 2){
+                                socket.emit("interviewer_status",({room:roomId,joined:false,interviewer:UserData.getProfileData()._id}))
                                 history.push('../../');
                             }else if(pos == 3){
                                 handleLeaveRoom();
                             }
                         }
-                    }/>
+                    }
+                    joined = {candidateJoined}
+                    candidateId= {candidateId}/>
                 </div>
             </div>
 
@@ -215,11 +260,31 @@ function RoomInterviewer(props){
             
             setRequestedCandidate(candidate);
         })
+
+        socket.on("candidate_status/"+id,(data)=>{
+            if(data.joined){
+                setCandidateJoined(true);
+            }else{
+                setCandidateJoined(false);
+            }
+        })
+
+        //Pinging server
+        setInterval(()=>{socket.emit("interviewer_status",({room:id,joined:true,interviewer:UserData.getProfileData()._id}))},1000);
+        
+        //Adding event if the tab gets closed
+        window.addEventListener("beforeunload", (ev) => {
+            socket.emit("interviewer_status",({room:id,joined:false,interviewer:UserData.getProfileData()._id}))
+        });
+
+        return ()=>{
+            socket.emit("interviewer_status",({room:id,joined:false,interviewer:UserData.getProfileData()._id}))
+        }
     },[])
 
     return(
         <div className="root" >
-            {checkStatus?<InterviewScreen candidateJoined = {candidateJoined} roomId = {id}/>:<LoadScreen title="Checking the interviewer"/>}
+            {checkStatus?<InterviewScreen candidateJoined = {candidateJoined} candidateId = {requestedCandidate} roomId = {id}/>:<LoadScreen title="Checking the interviewer"/>}
             
             <JoinCandidateDialog open = {showJoinDialog} onAccept={handleCandidateAccept} onDecline = {handleCandidateDecline} candidate = {requestedCandidate}/>
         </div>

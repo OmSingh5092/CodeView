@@ -41,6 +41,8 @@ io.on("connection",(socket)=>{
     websocket.chatRequestSocket(socket,io);
     websocket.interviewerAcceptRoomRequest(socket,io);
     websocket.interviewerRoomRequestSocket(socket,io);
+    websocket.interviewerStatusSocket(socket,io);
+    websocket.candidateStatusSocket(socket,io);
 })
 
 server.listen(config.app.local.port, ()=>{

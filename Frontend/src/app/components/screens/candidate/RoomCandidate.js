@@ -50,7 +50,28 @@ function RoomCandidate(props){
     const handleLeaveRoom = ()=>{
         CandidateData.clearCandidate();
         props.history.push('../../');
+
+        socket.emit("candidate_status",{room:id,joined:false})
     }
+
+    useEffect(()=>{
+        socket.on("interviewer_disconnect/"+roomId,(data)=>{
+            history.push("../");
+        })
+
+        //Pinging server
+        setInterval(()=>{socket.emit("candidate_status",{room:id,joined:true})},1000);
+        
+
+        //Adding event if the tab gets closed
+        window.addEventListener("beforeunload", (ev) => {
+            socket.emit("candidate_status",{room:id,joined:false})
+        });
+
+        return ()=>{
+            socket.emit("candidate_status",{room:id,joined:false})
+        }
+    })
 
 
     return(
@@ -70,6 +91,7 @@ function RoomCandidate(props){
                             }else if(pos == 1){
                                 setPeopleWindow(true);
                             }else if(pos == 2){
+                                socket.emit("candidate_status",{room:id,joined:false})
                                 history.push('../../');
                             }else if(pos == 3){
                                 handleLeaveRoom();

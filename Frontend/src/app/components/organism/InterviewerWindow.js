@@ -7,9 +7,18 @@ import { socket } from '../../utils/websocket';
 import {UserData} from '../../utils/localStorage';
 import { Close } from '@material-ui/icons';
 
+import Online from '../../res/icons/live.png'
+import Offline from '../../res/icons/offline.png'
+
 function InterviewViewHolder(props){
-    const {roomId,interviewerId}  = props;
+    const {roomId,interviewerId,isLive}  = props;
     const [interviewer,setInterviewer] = React.useState({});
+    const [live,setLive] = React.useState(false);
+
+    var isSelf = false;
+    if(interviewerId == UserData.getProfileData()._id){
+        isSelf = true;
+    }
 
     useEffect(()=>{
         getProfileById(interviewerId).then((res)=>(res.json()))
@@ -19,11 +28,31 @@ function InterviewViewHolder(props){
                 setInterviewer(res.interviewer);
             }
         })
+
+        socket.on("interviewer_status/"+roomId,(data)=>{
+            if(data.interviewer == interviewerId){
+                if(data.joined){
+                    setLive(true);
+                }else{
+                    setLive(false);
+                }
+                
+            }
+        })
     },[1])
 
     return(
         <Box borderColor="primary">
-            <Card style={{margin:10}} variant="outlined">
+            {!isSelf?
+                <Card style={{margin:10}} variant="outlined">
+                {live?
+                <div>
+                    <img src = {Online} style={{height:20,width:20}}/> Online
+                </div>
+                :
+                <div>
+                    <img src = {Offline} style={{height:20,width:20}}/> Offline
+                </div>}
                 <Typography style={{margin:10}}>
                     {interviewer.name}
                 </Typography>
@@ -32,7 +61,12 @@ function InterviewViewHolder(props){
                     {interviewer.email}
                 </Typography>
                  
-            </Card>
+                </Card>
+
+                :
+                <div/>
+            }
+            
         </Box>
     )
 
