@@ -93,7 +93,7 @@ const  Header = withRouter(function(props){
 
 
     return(
-        <AppBar position="static">
+        <AppBar position="static" style={{maxHeight:130}}>
             <Toolbar style={{padding:10}}>
                 <div>
                     <img src = {Avatar} style={{height:100, width:100, }} />

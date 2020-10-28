@@ -10,6 +10,9 @@ import {CandidateData} from '../../../utils/localStorage'
 function RoomCandidate(props){
     const {id} = useParams();
 
+    const [chatWindow,setChatWindow] = React.useState(false);
+    const [peopleWindow,setPeopleWindow] = React.useState(false);
+
     return(
         <div style={{display:"flex",flexGrow:1}}>
 

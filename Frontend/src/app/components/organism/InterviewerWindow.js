@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react'
-import { Button, CircularProgress, Dialog, DialogActions, DialogContent, Snackbar, TextField,DialogTitle } from '@material-ui/core'
+import { Button, CircularProgress, Dialog, DialogActions, DialogContent, Snackbar, TextField,DialogTitle, IconButton, Typography, Card, Box } from '@material-ui/core'
 
 import {getRoom} from '../../utils/api/controllers/roomCtrl'
 import {getProfileById} from '../../utils/api/controllers/interviewerCtrl'
 import { socket } from '../../utils/websocket';
 import {UserData} from '../../utils/localStorage';
+import { Close } from '@material-ui/icons';
 
 function InterviewViewHolder(props){
     const {roomId,interviewerId}  = props;
@@ -21,11 +22,18 @@ function InterviewViewHolder(props){
     },[1])
 
     return(
-        <div>
-            <div>
-                {interviewer.name}
-            </div>
-        </div>
+        <Box borderColor="primary">
+            <Card style={{margin:10}} variant="outlined">
+                <Typography style={{margin:10}}>
+                    {interviewer.name}
+                </Typography>
+
+                <Typography style={{margin:10}}>
+                    {interviewer.email}
+                </Typography>
+                 
+            </Card>
+        </Box>
     )
 
 }
@@ -102,14 +110,26 @@ function InterviewerWindow(props){
     }
 
     return(
-        <div style={{display:"flex",flexDirection:"column"}}>
+        
+        <div style={{display:"flex",flexDirection:"column",flexGrow:1, padding:10,margin:5,borderStyle:"solid" ,borderRadius:10}}>
+            <div style={{display:"flex"}}>
+
+                <Typography style={{display:"flex", flexGrow:1}} variant="h4">
+                    Interviewer Window
+                </Typography>
+                
+            
+                <IconButton onClick={()=>{onClose()}}>
+                    <Close/>
+                </IconButton>
+            </div>
             <div>
-                {isCandidate?<div/>: <Button onClick = {handleRequestDialog}>
+                {isCandidate?<div/>: <Button color="primary" variant="contained" onClick = {handleRequestDialog}>
                     Add Interviewer
                 </Button>}
                 
 
-                <div>
+                <div style={{display:"flex"}}>
                     {interviewers.map((item,index)=>(
                         <div>
                             <InterviewViewHolder roomId = {roomId} interviewerId={item}/>

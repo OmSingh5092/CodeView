@@ -8,7 +8,7 @@ import InterviewerWindow from '../../organism/InterviewerWindow'
 
 import {checkInterviewer} from '../../../utils/api/controllers/roomCtrl'
 import {socket} from '../../../utils/websocket'
-import { Button, Dialog, DialogActions, DialogTitle, IconButton} from '@material-ui/core'
+import { Button, Dialog, DialogActions, DialogTitle, IconButton, Typography, Card} from '@material-ui/core'
 import {getCandidateProfile} from '../../../utils/api/controllers/candidateCtrl'
 
 import {Chat, People} from '@material-ui/icons'
@@ -16,11 +16,24 @@ import {Chat, People} from '@material-ui/icons'
 //CSS Styles
 import '../style.css'
 
-function Candidate(props){
+function CandidateBar(props){
+    const {isJoined} = props;
 
     return(
         <div>
-            
+            {isJoined?
+            <div style={{display:"flex"}}>
+                <Typography>
+                    Candidate is Live..
+                </Typography>
+
+            </div>
+            :
+            <div>
+                <Typography>
+                    Candidate is not live
+                </Typography>
+            </div>}
         </div>
     )
 }
@@ -29,30 +42,39 @@ function ActionBar(props){
     const {onButtonClick}  = props;
     
     return(
-        <div style={{display:"flex"}}>
+        <Card>
             <IconButton onClick={()=>{onButtonClick(0)}}>
                 <Chat/>
             </IconButton>
             <IconButton onClick = {()=>onButtonClick(1)}>
                 <People/>
             </IconButton>
-        </div>
+        </Card>
     )
 }
 
 function InterviewScreen(props){
-    const {roomId} = props;
+    const {roomId,candidateJoined} = props;
 
     const [chatWindow,setChatWindow] = React.useState(false);
     const [peopleWindow,setPeopleWindow] = React.useState(false);
 
 
     return(
-        <div style={{display:"flex",flexGrow:1,flexDirection:"column"}}>
-            <div style={{display:"flex"}}>
-                Interviewer Room
+        <div style={{display:"flex",flexGrow:1,flexDirection:"column"}} className="root">
+            <div style={{display:"flex", justifyContent:"center"}}>
+                <div style={{display:"flex",flexGrow:1, flexWrap:"wrap"}}>
+                    <Typography variant="h4">
+                        Interviewer Room
+                    </Typography>
+                </div>
+                
+                <div style={{display:"flex",margin:10}}>
+                    <CandidateBar isJoined = {candidateJoined}/>
+                </div>
+                
 
-                <div>
+                <div style={{margin:10,}}>
                     <ActionBar onButtonClick={
                         (pos)=>{
                             if(pos == 0){
@@ -65,19 +87,28 @@ function InterviewScreen(props){
                 </div>
             </div>
 
-            <div style={{display:"flex"}}>
+            <div style={{display:"flex",flexGrow:1}}>
                 <div style={{display:"flex", flexGrow:1,flexDirection:"column"}}>
                     
-                    <CodeEditor roomId = {roomId}/>
+                    <div style={{display:"flex",flexGrow:1}}>
+                        <CodeEditor roomId = {roomId}/>
 
+                    </div>
+                    
+                    {peopleWindow?
                     <div style={{display:"flex"}}>
                         <InterviewerWindow roomId = {roomId} isCandidate = {false} onClose = {()=>{setPeopleWindow(false)}}/>
                     </div>
-
+                    :<div/>}
+                    
                     
                 </div>
                 <div style={{display:"flex"}}>
-                    <ChatWindow roomId = {roomId} isCandidate = {false} onClose={()=>{setChatWindow(false)}}/>
+                    {chatWindow?
+                        <ChatWindow roomId = {roomId} isCandidate = {false} onClose={()=>{setChatWindow(false)}}/>:
+                        <div/>
+                    }
+                    
                 </div>
             </div>
 
@@ -125,20 +156,19 @@ function RoomInterviewer(props){
     const [checkStatus, setCheckStatus] = React.useState(false);
     const [requestedCandidate,setRequestedCandidate] = React.useState("");
     const [showJoinDialog,setShowJoinDialog] = React.useState(false);
+    const [candidateJoined, setCandidateJoined] = React.useState(false);
 
 
     const handleCandidateAccept = ()=>{
         socket.emit("accept",({room:id, candidate:requestedCandidate, res:true}));
         setShowJoinDialog(false);
+        setCandidateJoined(true);
     }
 
     const handleCandidateDecline = ()=>{
         socket.emit("accept",({room:id, candidate:requestedCandidate, res:false}));
         setShowJoinDialog(false);
     }
-
-
-
 
     useEffect(()=>{
         checkInterviewer(id).then((res)=>(res.json()))
@@ -169,8 +199,8 @@ function RoomInterviewer(props){
     },[])
 
     return(
-        <div className="root">
-            {checkStatus?<InterviewScreen roomId = {id}/>:<LoadScreen title="Checking the interviewer"/>}
+        <div className="root" >
+            {checkStatus?<InterviewScreen candidateJoined = {candidateJoined} roomId = {id}/>:<LoadScreen title="Checking the interviewer"/>}
             
             <JoinCandidateDialog open = {showJoinDialog} onAccept={handleCandidateAccept} onDecline = {handleCandidateDecline} candidate = {requestedCandidate}/>
         </div>

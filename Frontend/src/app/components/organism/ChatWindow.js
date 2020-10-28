@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Button, CircularProgress, Snackbar, TextField,Input } from '@material-ui/core'
+import { Button, CircularProgress, Snackbar, TextField,Input, IconButton, Typography, Card } from '@material-ui/core'
 import {withRouter} from 'react-router-dom'
 
 import {getChats} from '../../utils/api/controllers/chatCtrl'
@@ -7,12 +7,56 @@ import {uploadFile} from '../../utils/firebase/storage'
 
 import {UserData,CandidateData} from '../../utils/localStorage'
 import {socket} from '../../utils/websocket'
+import { Close } from '@material-ui/icons'
+
+import {getProfileById} from '../../utils/api/controllers/interviewerCtrl'
 
 function Chat(props){
     const {chat} = props; 
+    
+    const [info,setInfo] = React.useState({});
+    useEffect(()=>{
+        if(chat.isCandidate){
+            return;
+        }
+
+        getProfileById(chat.sender).then((res)=>(res.json()))
+        .then((res)=>{
+            if(res.success){
+                setInfo(res.profile);
+            }
+        })
+
+    },[1])
+
     return(
-        <div>
-            {chat.message}
+        <div style={{display:"flex",flexWrap:"wrap",margin:10,}}>
+            <Card variant="contained" style={{backgroundColor:"#f7deff"}} >
+                <div style={{display:"flex", flexDirection:"column",margin:10,}}>
+                    <div style={{margin:10}}>
+                        {chat.isCandidate?
+                            <Typography>
+                                Candidate
+                            </Typography>
+                            :
+                            <Typography>
+                                {info.name}
+                            </Typography>
+                        }
+                    </div>
+                    
+                    <Typography >
+                        {chat.message}
+                    </Typography>
+
+                    <Typography style={{display:"flex",margin:10}}>
+                        {chat.createdAt}
+                    </Typography>
+
+                </div>
+            </Card>
+            
+            
         </div>
     )
 }
@@ -109,8 +153,21 @@ function ChatWindow(props){
     },[1])
 
     return(
-        <div style={{display:"flex", flexDirection:"column"}}>
+        <div style={{display:"flex", flexDirection:"column",margin:5, padding:10, borderStyle:"solid", borderRadius:10}}>
+            <div style={{display:"flex"}}>
+                <div style={{display:"flex",flexGrow:1}}>
+                    <Typography variant="h4">
+                        Chat Window
+                    </Typography>
+                </div>
 
+                
+                
+
+                <IconButton onClick={()=>onClose()}>
+                    <Close/>
+                </IconButton>
+            </div>
             <div style={{display:"flex",flexGrow:1,flexDirection:"column"}}>
                 {chats.map((item,index)=>(
                     <Chat chat = {item}/>

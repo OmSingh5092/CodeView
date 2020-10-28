@@ -32,7 +32,7 @@ function CreateRoomScreen(props){
     }
 
     return(
-        <div style={{display:"flex", flexDirection:"column",alignContent:"center", margin:20}} >
+        <div style={{display:"flex",flexGrow:1, flexDirection:"column",alignContent:"center", margin:20}}  >
 
             <Typography variant ="h4">
                 Create Room

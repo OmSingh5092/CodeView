@@ -3,12 +3,13 @@ import React, { useEffect } from 'react'
 import {socket} from '../../utils/websocket'
 import {getRoom} from '../../utils/api/controllers/roomCtrl'
 
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/theme/material.css';
-import './style.css'
-import {UnControlled as CodeMirror} from 'react-codemirror2' 
-require('codemirror/mode/xml/xml');
-require('codemirror/mode/javascript/javascript');
+import AceEditor from "react-ace";
+
+import "ace-builds/src-noconflict/mode-java";
+import "ace-builds/src-noconflict/mode-c_cpp";
+import "ace-builds/src-noconflict/theme-github";
+import "ace-builds/src-noconflict/theme-monokai";
+import "ace-builds/src-noconflict/ext-language_tools"
 
 function CodeEditor(props){
     const {roomId} = props;
@@ -34,18 +35,26 @@ function CodeEditor(props){
 
     return(
         <div style={{display:"flex", flexGrow:1}}>
-            <CodeMirror
-                value={code}
-                options={{
-                    mode: 'java',
-                    theme: 'material',
-                    lineNumbers: true
-                }}
-                onChange={(editor, data, value) => {
+            <AceEditor
+                style={{width:"100%",height:"100%"}}
+                placeholder="Text"
+                mode="java"
+                theme="monokai"
+                onChange={(value) => {
                     socket.emit('code',{code:value,room:roomId});
                 }}
-                scroll = {false}
-            />
+                fontSize={14}
+                showPrintMargin={false}
+                showGutter={true}
+                highlightActiveLine={false}
+                value={code}
+                setOptions={{
+                enableBasicAutocompletion: true,
+                enableLiveAutocompletion: true,
+                enableSnippets: false,
+                showLineNumbers: true,
+                tabSize: 2,
+                }}/>
         </div>
     )
 }

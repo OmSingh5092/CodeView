@@ -4,3 +4,9 @@
     flex-grow: 1;
     flex-direction: column;
 }
+
+.root{
+    display: flex;
+    min-width:100vw;
+    min-height: 100vh;
+}
