@@ -10,5 +10,6 @@ router.post('/add/interviewer',verifyUser,roomCtrl.addInterviewer);
 router.get('/get',roomCtrl.getRoom);
 router.get('/check',roomCtrl.checkRoom);
 router.get('/check/interviewer',verifyUser,roomCtrl.checkInterviewer);
+router.get('/get/interviewer',verifyUser,roomCtrl.getRoomsByInterviewer);
 
 module.exports = router;

@@ -11,7 +11,7 @@ import {socket} from '../../../utils/websocket'
 import { Button, Dialog, DialogActions, DialogTitle, IconButton, Typography, Card} from '@material-ui/core'
 import {getCandidateProfile} from '../../../utils/api/controllers/candidateCtrl'
 
-import {Chat, People} from '@material-ui/icons'
+import {Chat, ExitToApp, People} from '@material-ui/icons'
 
 //CSS Styles
 import '../style.css'
@@ -49,12 +49,18 @@ function ActionBar(props){
             <IconButton onClick = {()=>onButtonClick(1)}>
                 <People/>
             </IconButton>
+            <IconButton onClick = {()=>onButtonClick(2)}>
+                <ExitToApp/>
+            </IconButton>
+            <Button color="alert">
+                Leave Room
+            </Button>
         </Card>
     )
 }
 
-function InterviewScreen(props){
-    const {roomId,candidateJoined} = props;
+const InterviewScreen = withRouter(function(props){
+    const {roomId,candidateJoined,history} = props;
 
     const [chatWindow,setChatWindow] = React.useState(false);
     const [peopleWindow,setPeopleWindow] = React.useState(false);
@@ -81,6 +87,8 @@ function InterviewScreen(props){
                                 setChatWindow(true);
                             }else if(pos == 1){
                                 setPeopleWindow(true);
+                            }else if(pos == 2){
+                                history.push('../../');
                             }
                         }
                     }/>
@@ -116,7 +124,7 @@ function InterviewScreen(props){
             
         </div>
     )
-}
+})
 
 function JoinCandidateDialog(props){
     const {onDecline,onAccept,candidate,open} = props;

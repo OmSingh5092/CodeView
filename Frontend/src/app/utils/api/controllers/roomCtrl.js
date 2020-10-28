@@ -48,3 +48,12 @@ export const addInterviewer = (roomId) =>{
 
     return fetch(roomEndPoints.addInterviewer, requestOptions);
 }
+
+export const getRoomsByInterviewer = ()=>{
+    const requestOptions = {
+        method:"GET",
+        headers:{"token":UserData.getToken(),'Content-Type': 'application/json',},
+    }
+
+    return fetch(roomEndPoints.getRoomsByInterviewer,requestOptions)
+}

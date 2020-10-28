@@ -73,10 +73,7 @@ const getRoom = async (req,res)=>{
     
 }
 
-const joinRoom  = (req,res)=>{
-    
 
-}
 
 const checkInterviewer = async (req,res)=>{
     const id = req.user.id;
@@ -128,4 +125,23 @@ const addInterviewer = (req,res)=>{
     })
 }
 
-module.exports = {createRoom,checkRoom,getRoom,joinRoom,checkInterviewer,addInterviewer};
+const getRoomsByInterviewer = (req,res)=>{
+    const id = req.user.id;
+    
+    Room.find({interviewers:{$all:[id]}})
+    .then((docs)=>{
+        return res.status(200).json({
+            success:true,
+            rooms:docs
+        })
+    }).catch((err)=>{
+        console.log("Error",err);
+
+        return res.status(500).json({
+            success:false,
+            msg:"Internal Server Error!",
+        })
+    })
+}
+
+module.exports = {createRoom,checkRoom,getRoom,checkInterviewer,addInterviewer,getRoomsByInterviewer};

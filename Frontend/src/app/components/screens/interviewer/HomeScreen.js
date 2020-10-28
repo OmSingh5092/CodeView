@@ -11,7 +11,6 @@ import Avatar from '../../../res/icons/coding.png'
 import CreateRoom from './CreateRoom';
 import PastInterviews from './PastInterviews';
 import Profile from './Profile';
-import RoomInterviewer from './RoomInterviewer'
 
 import AuthRedirect from '../../atoms/RedirectRoute'
 
@@ -22,7 +21,7 @@ import { socket } from '../../../utils/websocket'
 import {addInterviewer} from '../../../utils/api/controllers/roomCtrl'
 
 function RequestMenu(props){
-    const {open,requests,onAccept,onReject, onClose} = props;
+    const {open,requests,onAccept,onReject, onClose,anchor} = props;
 
     useEffect(()=>{
         console.log("Requests",requests);
@@ -31,31 +30,36 @@ function RequestMenu(props){
     return(
         <div>
             <Menu open = {open} anchorOrigin={{
-                  vertical: 'top',
+                  vertical: 'bottom',
                   horizontal: 'right',
                   
                 }} onClose={onClose}
-                style={{padding:20}}>
+                style={{padding:20}}
+                anchorEl={anchor}>
 
-                <div>
-                    Room Requests
+                <div style={{margin:20}}>
+                    <div>
+                        Room Requests
+                    </div>
+                    <div style={{display:"flex", flexDirection:"column", margin:20}}>
+                        {requests.map((item,index)=>(
+                            <div>
+                                Request by - {item.email} 
+                                <br/>
+                                Room Id - {item.room}
+                                <br/>
+                                <Button onClick = {()=>{onAccept(item)}}>
+                                    Accept
+                                </Button>
+                                <Button onClick = {()=>onReject(item)}>
+                                    Reject
+                                </Button>
+                            </div>
+                        ))}
+                    </div>
                 </div>
-                <div style={{display:"flex", flexDirection:"column", margin:20}}>
-                    {requests.map((item,index)=>(
-                        <div>
-                            Request by - {item.email} 
-                            <br/>
-                            Room Id - {item.room}
-                            <br/>
-                            <Button onClick = {()=>{onAccept(item)}}>
-                                Accept
-                            </Button>
-                            <Button onClick = {()=>onReject(item)}>
-                                Reject
-                            </Button>
-                        </div>
-                    ))}
-                </div>
+
+                
             </Menu>
         </div>
     )
@@ -63,9 +67,10 @@ function RequestMenu(props){
 }
 
 const  Header = withRouter(function(props){
+    const {history} = props;
     const [profile,setProfile] = React.useState({});
     const [requests,setRequests] = React.useState([]);
-    const [requestMenuOpen,setRequestMenuOpen] = React.useState(false);
+    const [requestMenu,setRequestMenu] = React.useState(null);
 
     useEffect(()=>{
         console.log("Id",UserData.getProfileData());
@@ -106,22 +111,24 @@ const  Header = withRouter(function(props){
                 </Typography>
                 
                 <div>
+                    <IconButton size="medium" color="inherit" onClick = {()=>{history.push('../')}} >
+                        <Home/>
+                    </IconButton>
                     <IconButton size="medium" color="inherit" onClick = {()=>{
                         window.open(UserData.getProfileData().website,'_blank');
                     }}>
                         <Language/>
                     </IconButton>
-                    <IconButton size="medium" color="inherit">
+                    <IconButton size="medium" color="inherit" onClick={()=>{history.push('./profile')}}>
                         <AccountBox/>
                     </IconButton>
-                    <IconButton size="medium" color="inherit" onClick={()=>{setRequestMenuOpen(true)}}>
+                    <IconButton size="medium" color="inherit" onClick={(event)=>{setRequestMenu(event.currentTarget)}}>
                         <Badge badgeContent={requests.length} color="secondary">
                             <Notifications/>
                         </Badge>
-                        
                     </IconButton>
 
-                    <RequestMenu onAccept={handleRequestAccept} onReject={handleRequestReject} requests={requests} open = {requestMenuOpen} onClose= {()=>{setRequestMenuOpen(false)}}/>
+                    <RequestMenu anchor ={requestMenu} onAccept={handleRequestAccept} onReject={handleRequestReject} requests={requests} open = {Boolean(requestMenu)} onClose= {()=>{setRequestMenu(null)}}/>
                 </div>
             </Toolbar>
         </AppBar>
@@ -140,7 +147,7 @@ function HomeScreen(props){
                 <Switch>
                     <Route exact path = "/" component = {(PastInterviews)}/>
                     <Route path="/createRoom" component={(CreateRoom)}/>
-                    <Route path="/profile" component = {(Profile)}/>
+                    <Route path="/profile"><Profile data = {UserData.getProfileData()}/></Route>
                 </Switch>
             </HashRouter>
         </div>

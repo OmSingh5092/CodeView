@@ -1,18 +1,28 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import { Button, TextField, Input,CircularProgress, Snackbar} from '@material-ui/core'
-import {uploadFile} from '../../utils/firebase/storage';
+import {uploadFile,downloadFile} from '../../utils/firebase/storage';
 import {UserData} from '../../utils/localStorage'
 
 import AvatarIcon from '../../res/icons/user.png'
 
 function ImageUploader(props){
-    const onUpload = props.onUpload;
-    const uploadState = props.uploadState;
+    const {onUpload,uploadState,path} = props;
 
     const [uploading,setUploading] = React.useState(false);
     const [image,setImage] = React.useState(AvatarIcon);
     const [snackbarStatus, setSnackbarStatus] = React.useState(false);
+
+
+    useEffect(()=>{
+        if(path == null){
+            return;
+        }
+        downloadFile(path).then((url)=>{
+            console.log("URL",url);
+        })
+
+    },[1])
 
 
     const handleImageSelect = (event)=>{
@@ -51,43 +61,56 @@ function ImageUploader(props){
 }
 
 function RegistrationForm(props){
-    const onSubmit = props.onSubmit;
+    var {onSubmit,data} = props;
+    if(data == null){
+        data = {
+            name:"",
+            phone:"",
+            company:"",
+            website:"",
+            photo:"",
+    
+        }
+    }
 
-    const [imageUploading, setImageUploading] = React.useState(false);
+    const [imageUploading, setImageUploading] = React.useState(false);    
 
-    var data={
-        name:"",
-        phone:"",
-        company:"",
-        website:"",
-        photo:"",
-
-    }    
+    useEffect(()=>{
+        if(data == null){
+            
+            return;
+        }
+        
+    },[1])
 
     return(
         <div style={{display:"flex", flexDirection:"column", flexWrap:"wrap"}}>
 
-            <ImageUploader onUpload={(path)=>{data.photo= path}} uploadState={imageUploading}/>
+            <ImageUploader path={data.photo} onUpload={(path)=>{data.photo= path}} uploadState={imageUploading}/>
     
             <TextField
                 style={{marginTop:20}}
                 variant="outlined"
                 label="Name"
+                defaultValue={data.name}
                 onChange={(event)=>{data.name = event.target.value}}/>
             <TextField
                 style={{marginTop:20}}
                 variant="outlined"
                 label="Phone"
+                defaultValue={data.phone}
                 onChange={(event)=>{data.phone = event.target.value}}/>
             <TextField
                 style={{marginTop:20}}
                 variant="outlined"
                 label="Company or Organisation"
+                defaultValue={data.company}
                 onChange={(event)=>{data.company = event.target.value}}/>
             <TextField
                 style={{marginTop:20}}
                 variant = "outlined"
                 label ="Website"
+                defaultValue = {data.website}
                 onChange = {(event)=>{data.website = event.target.value}}/>
             <div style={{flexGrow:1}}>
                 <Button variant="contained" color="primary" style={{marginTop:30}} onClick={()=>{onSubmit(data)}}>
