@@ -6,6 +6,8 @@ import {getRoom} from '../../utils/api/controllers/roomCtrl'
 import {IconButton, MenuItem, Switch, TextField,Typography} from '@material-ui/core'
 import {BrightnessHigh,Brightness4, Language} from '@material-ui/icons'
 
+import {CandidateData,UserData} from '../../utils/localStorage'
+
 import AceEditor from "react-ace";
 
 //Importing ace editor styles
@@ -27,6 +29,14 @@ function CodeEditor(props){
     const {roomId} = props;
     const [code,setCode] = React.useState("");
 
+    var sender;
+
+    if(CandidateData.candidateExists()){
+        sender = CandidateData.getCandidateId();
+    }else{
+        sender = UserData.getProfileData()._id;
+    }
+
     const languages = ["Java","C++","JavaScript","Python","MySQL","HTML","TypeScript","CSS"];
     const modes  = ["java",'c_cpp',"javascript","python","mysql","html","typescript","css"];
     const themes = ["kuroir","monokai"];
@@ -42,9 +52,11 @@ function CodeEditor(props){
             if(res.success){
                 setCode(res.room.code);
                 socket.on(roomId+"/updateCode",(data)=>{
-                    setCode(data.code);
-                    setLanguage(data.language);
-                    console.log("Received Data", data);
+                    console.log("Data Received",data);
+                    if(data.sender != sender){
+                        setCode(data.code);
+                        setLanguage(data.language);
+                    }
                 })
             }else{
                 console.log("Error",res.msg);
@@ -104,7 +116,7 @@ function CodeEditor(props){
                 theme={themes[theme]}
                 onChange={(value) => {
                     setCode(value);
-                    socket.emit('code',{code:value,language:language,room:roomId});
+                    socket.emit('code',{code:value,language:language,room:roomId,sender:sender});
                 }}
                 fontSize={fontSize} 
                 showPrintMargin={false}

@@ -19,6 +19,9 @@ export const googleConfig = {
   };
 
 export const backend = {
-  baseUrl:"http://localhost:8000/api",
-  websocketEndPoint: "http://localhost:8000"
+ baseUrl:"https://code-view.herokuapp.com/api",
+  websocketEndPoint: "https://code-view.herokuapp.com",
+
+  //baseUrl:"http://localhost:8000/api",
+  //websocketEndPoint: "http://localhost:8000"
 }
