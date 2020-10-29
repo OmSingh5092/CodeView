@@ -125,24 +125,35 @@ const addInterviewer = (req,res)=>{
     })
 }
 
-const removeInterviewer = (req,res)=>{
+const removeInterviewer = async (req,res)=>{
     const id = req.user.id;
     const room = req.headers.room;
 
-    Room.updateOne({_id:room},{$pull:{interviewers:id}})
-    .then((doc)=>{
+    try{
+        const update = await Room.updateOne({_id:room},{$pull:{interviewers:id}});
+        const doc = await Room.findOne({_id:room});
+
+        //Deleting the document if no 
+        if(doc.interviewers.length == 0){
+            await Room.deleteOne({_id:room});
+        }
+
         return res.status(200).json({
             success:true,
             msg:"Update Successfull",
         })
-    }).catch((err)=>{
+    }catch(err){
         console.log("Error",err);
 
         return res.status(500).json({
             success:false,
             msg:"Update unsuccessfull",
         })
-    })
+    }
+
+    
+
+    
 }
 
 const getRoomsByInterviewer = (req,res)=>{

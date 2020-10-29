@@ -1,7 +1,7 @@
 import React from 'react'
 import {withRouter} from 'react-router-dom'
 
-import {Fab,Button, Dialog,DialogTitle, DialogContent, CircularProgress,DialogActions} from '@material-ui/core'
+import {Fab,Button, Dialog,DialogTitle, DialogContent, CircularProgress,DialogActions, Snackbar} from '@material-ui/core'
 import {FileCopy} from '@material-ui/icons'
 
 import {CandidateData} from '../../../utils/localStorage'
@@ -40,9 +40,16 @@ function WaitingDialog(props){
 function JoinRoomScreen(props){
     const roomId = CandidateData.getRoomId();
     const [showWaitingDialog,setWaitingDialog] = React.useState(false); 
+    const [showSnackBar,setShowSnackBar] = React.useState(false);
+    
     
 
     const handleJoinRoom = ()=>{
+        //Checking if candidate has submitted the details or not
+        if(!CandidateData.candidateExists()){
+            setShowSnackBar(true);
+            return false;
+        }
         setWaitingDialog(true);
         console.log("Room",roomId);
         socket.emit("request",{room:roomId, candidate:CandidateData.getCandidateId(), waiting:true});
@@ -104,7 +111,7 @@ function JoinRoomScreen(props){
 
             <WaitingDialog open={showWaitingDialog} onCancle = {handleCancleJoinRoom}/>
 
-            
+            <Snackbar message = "Please enter the details!" open = {showSnackBar} onClose={()=>setShowSnackBar(false)}/>
             
         </div>
     )

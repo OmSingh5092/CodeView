@@ -56,7 +56,7 @@ function RoomCandidate(props){
 
     useEffect(()=>{
         socket.on("interviewer_disconnect/"+roomId,(data)=>{
-            history.push("../");
+            history.push("../../");
         })
 
         //Pinging server

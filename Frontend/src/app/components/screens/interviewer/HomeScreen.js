@@ -124,7 +124,7 @@ const  Header = withRouter(function(props){
                         <Home/>
                     </IconButton>
                     <IconButton size="medium" color="inherit" onClick = {()=>{
-                        window.open(UserData.getProfileData().website,'_blank');
+                        window.open("https://www.google.co.in/",'_blank');
                     }}>
                         <Language/>
                     </IconButton>

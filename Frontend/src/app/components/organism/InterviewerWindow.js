@@ -4,7 +4,7 @@ import { Button, CircularProgress, Dialog, DialogActions, DialogContent, Snackba
 import {getRoom} from '../../utils/api/controllers/roomCtrl'
 import {getProfileById} from '../../utils/api/controllers/interviewerCtrl'
 import { socket } from '../../utils/websocket';
-import {UserData} from '../../utils/localStorage';
+import {UserData,CandidateData} from '../../utils/localStorage';
 import { Close } from '@material-ui/icons';
 
 import Online from '../../res/icons/live.png'
@@ -16,7 +16,9 @@ function InterviewViewHolder(props){
     const [live,setLive] = React.useState(false);
 
     var isSelf = false;
-    if(interviewerId == UserData.getProfileData()._id){
+    if(CandidateData.candidateExists()){
+        isSelf = false;
+    }else if(interviewerId == UserData.getProfileData()._id){
         isSelf = true;
     }
 

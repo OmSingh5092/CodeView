@@ -14,6 +14,7 @@ function JoinRoomForm(props){
     }
 
     const handleSubmit = ()=>{
+        console.log("Data",data);
         checkRoom(data).then((res)=>(res.json()))
         .then((res)=>{
             console.log("Response",res);

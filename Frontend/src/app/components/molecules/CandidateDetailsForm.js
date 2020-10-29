@@ -14,6 +14,7 @@ function RoomDetailsForm(props){
     const roomId = CandidateData.getRoomId();
     const [details,setDetails] = React.useState({});
     const [showSnackbar,setShowSnackbar] = React.useState(false);
+    const [showValidate,setShowValidate] = React.useState(false);
     
     var room;
     
@@ -45,12 +46,7 @@ function RoomDetailsForm(props){
                 
             }
         })
-
-
-
-
-    },[1]);
-    
+    },[1]);    
 
     const handleFormSubmit = ()=>{
         console.log("Data",details);
@@ -106,6 +102,8 @@ function RoomDetailsForm(props){
                     vertical: 'bottom',
                     horizontal: 'center',
                   }}/>  
+
+            <Snackbar open = {showValidate} message = "Fill all the details!" onClose={()=>showValidate(false)}/>
         </div>
     )
 }

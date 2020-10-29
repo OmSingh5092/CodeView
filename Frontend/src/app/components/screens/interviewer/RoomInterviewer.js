@@ -30,7 +30,7 @@ function CandidateBar(props){
             <div style={{display:"flex"}}>
                 <img src ={Online} style={{height:20,width:20}}/>
                 <Typography>
-                    Candidate is Live..
+                    Candidate is Online
                 </Typography>
 
             </div>
@@ -38,7 +38,7 @@ function CandidateBar(props){
             <div style={{display:"flex"}}>
                 <img src ={Offline} style={{height:20,width:20}}/>
                 <Typography>
-                    Candidate is not live
+                    Candidate is Offline
                 </Typography>
             </div>}
         </div>

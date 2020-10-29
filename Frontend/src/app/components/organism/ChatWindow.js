@@ -3,7 +3,7 @@ import { Button, CircularProgress, Snackbar, TextField,Input, IconButton, Typogr
 import {withRouter} from 'react-router-dom'
 
 import {getChats} from '../../utils/api/controllers/chatCtrl'
-import {uploadFile} from '../../utils/firebase/storage'
+import {uploadFile,downloadFile} from '../../utils/firebase/storage'
 
 import {UserData,CandidateData} from '../../utils/localStorage'
 import {socket} from '../../utils/websocket'
@@ -41,7 +41,6 @@ function Chat(props){
         if(chat.isCandidate){
             return;
         }
-
         console.log("Chat",chat);
 
         getProfileById(chat.sender).then((res)=>(res.json()))
@@ -54,7 +53,11 @@ function Chat(props){
     },[1])
 
     const handleDownload= ()=>{
-        window.open(chat.media,"_blank");
+        downloadFile(chat.media)
+        .then((url)=>{
+            window.open(url,"_blank");
+        })
+        
     }
 
     return(
@@ -78,7 +81,7 @@ function Chat(props){
                     </Typography>
 
                     {chat.media?
-                        <IconButton href={chat.media}>
+                        <IconButton onClick={handleDownload}>
                             <CloudDownload/>
                         </IconButton>
                         :
@@ -121,6 +124,7 @@ function SendMessage(props){
         console.log("Chat",chat);
 
         socket.emit("chat_receive",chat);
+        setText("");
     }
 
     const handleAttach = (event)=>{
@@ -141,7 +145,6 @@ function SendMessage(props){
 
         //Removing the file
     }
-
     useEffect(()=>{
         
     },[1])
@@ -151,6 +154,7 @@ function SendMessage(props){
         <div style={{display:"flex", flexDirection:"column"}}>
             <div style={{display:"flex",margin:10}}>
             <TextField
+                value={text}
                 label="Type Message"
                 style={{display:"flex", flexGrow:1,marginRight:10}}
                 onChange={(event)=>{setText(event.target.value)}}
@@ -210,7 +214,7 @@ function ChatWindow(props){
                     <Close/>
                 </IconButton>
             </div>
-            <div style={{display:"flex",flexDirection:"column",flexGrow:1,height:0, overflowY:"scroll"}}> 
+            <div style={{display:"flex",flexDirection:"column",flexGrow:1,height:0, overflowY:"scroll", scrollSnapAlign:"y proximity"}}> 
                 {chats.map((item,index)=>(
                     <Chat chat = {item}/>
                     

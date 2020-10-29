@@ -1,7 +1,7 @@
 import React from 'react';
 import {withRouter} from 'react-router-dom'
 
-import {Typography,Fab} from '@material-ui/core'
+import {Typography, Snackbar} from '@material-ui/core'
 import {Done} from '@material-ui/icons'
 
 import CreateRoomForm from '../../molecules/CreateRoomForm';
@@ -11,12 +11,33 @@ import {createRoom} from '../../../utils/api/controllers/roomCtrl'
 
 
 function CreateRoomScreen(props){
+
+    const [showSnackBar,setShowSnackBar] = React.useState(false);
+
     var data ={
         title:"",
-        fields:{}
+        fields:{},
+        password:"",
+    }
+
+    const validate = () => {
+        if(data.title == ""){
+            return false;
+        }else if(data.fields == {}){
+            return false;
+        }else if(data.password == ""){
+            return false;
+        }
+
+        return true;
     }
 
     const handleSubmit = ()=>{
+        if(!validate()){
+            setShowSnackBar(true);
+            return;
+        }
+        
         createRoom(data).then((res)=>(res.json()))
         .then((res)=>{
             if(res.success){
@@ -43,6 +64,8 @@ function CreateRoomScreen(props){
                 
             </div>
             <FloatingAction icon = {Done} text="Create" onClick={handleSubmit}/>
+
+            <Snackbar open = {showSnackBar} message="Please fill all the entries!" onClose={()=>setShowSnackBar(false)}/>
             
         </div>
     )
