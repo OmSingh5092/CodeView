@@ -196,7 +196,9 @@ function ChatWindow(props){
         });
 
         socket.on("chat_send/"+roomId,(data)=>{
-            setChats([...chats,data]);
+            var newChats = chats.concat(data);
+            chats = newChats;
+            setChats(newChats);
         });
     },[1])
 
