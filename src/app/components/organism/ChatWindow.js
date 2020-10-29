@@ -57,7 +57,6 @@ function Chat(props){
         .then((url)=>{
             window.open(url,"_blank");
         })
-        
     }
 
     return(
