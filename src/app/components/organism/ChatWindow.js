@@ -190,16 +190,23 @@ function ChatWindow(props){
         .then((res)=>{
             console.log("Chat Response",res);
             if(res.success){
-                chats = res.chats;
-                setChats(chats);
+                if(res.chats == null){
+                    res.chats = [];
+                }
+                res.chats.map((item,index)=>{
+                    chats = chats.concat(item);
+                    setChats(chats);
+                })
+
+                socket.on("chat_send/"+roomId,(data)=>{
+                    chats = chats.concat(data);
+                    setChats(chats);
+                });
+                
             }
         });
 
-        socket.on("chat_send/"+roomId,(data)=>{
-            var newChats = chats.concat(data);
-            chats = newChats;
-            setChats(newChats);
-        });
+        
     },[1])
 
     return(
