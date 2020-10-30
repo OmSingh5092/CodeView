@@ -100,21 +100,30 @@ function RequestDialog(props){
 
     return(
         <div>
-            <Dialog open = {open}>
-                <DialogTitle>Enter the emailId of interviewer</DialogTitle>
-                <DialogContent>
-                    <TextField label="Email Id" onChange={(event)=>{setEmail(event.target.value)}}/>
-                    {waiting?<div>Waiting <br/><CircularProgress/></div>:<div/>}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleRequest}>
-                        Request
-                    </Button>
-                    <Button onClick ={()=>{onClose()}}>
-                        Cancle
-                    </Button>
-                </DialogActions>
-            </Dialog>
+            {open?
+                <Card style={{width:500}}>
+                    <div style={{display:"flex", flexDirection:"column",margin:10}}>
+                        <Typography style={{fontFamily:"Roboto-Black"}}>
+                            Enter the emailId of interviewer
+                        </Typography>
+                        <TextField style={{margin:10}}label="Email Id" onChange={(event)=>{setEmail(event.target.value)}} variant="outlined"/>
+
+                        {waiting?<div style={{display:"flex"}}>Waiting <br/><CircularProgress style={{marginLeft:20}}/></div>:<div/>}
+
+                        <div style={{display:"flex"}}>
+                            <Button onClick={handleRequest} color="primary" variant="outlined" style={{margin:10}}>
+                                Request
+                            </Button>
+                            <Button onClick ={()=>{onClose()}} color = "primary" variant = "outlined" style={{margin:10}}>
+                                Cancle
+                            </Button>
+                        </div>
+                    </div>
+                </Card>
+                
+                :
+                <div/>
+            }
 
             <Snackbar open = {showSnackBar} onClose= {()=>setShowSnackBar(false)} message={snackBarMessage}/>
         </div>
@@ -149,22 +158,23 @@ function InterviewerWindow(props){
         
         <div style={{display:"flex",flexDirection:"column",flexGrow:1,borderStyle:"solid" ,borderRadius:10,padding:10}}>
             <div style={{display:"flex"}}>
-
-                <Typography style={{display:"flex", flexGrow:1}} variant="h4">
-                    Interviewer Window
-                </Typography>
+                <div style={{display:"flex", flexGrow:1}}>
+                    <Typography  variant="h4" style={{marginRight:10}}>
+                        Interviewer Window
+                    </Typography>
+                    
+                    {isCandidate?<div/>: <Button color="primary" variant="contained" onClick = {handleRequestDialog}>
+                        Add Interviewer
+                    </Button>}
+                </div>
                 
-            
                 <IconButton onClick={()=>{onClose()}}>
                     <Close/>
                 </IconButton>
             </div>
-            <div>
-                {isCandidate?<div/>: <Button color="primary" variant="contained" onClick = {handleRequestDialog}>
-                    Add Interviewer
-                </Button>}
-                
 
+            <RequestDialog roomId = {roomId} open={requestDialogOpen} onClose={()=>{setRequestDialogOpen(false)}} onAccept = {(interviewer)=>{setIntervieweres([...interviewers,interviewer])}}/>
+            <div>
                 <div style={{display:"flex"}}>
                     {interviewers.map((item,index)=>(
                         <div>
@@ -173,7 +183,7 @@ function InterviewerWindow(props){
                     ))}
                 </div>
 
-                <RequestDialog roomId = {roomId} open={requestDialogOpen} onClose={()=>{setRequestDialogOpen(false)}} onAccept = {(interviewer)=>{setIntervieweres([...interviewers,interviewer])}}/>
+                
             </div>
         </div>
     )

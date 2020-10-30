@@ -3,7 +3,7 @@ import React, { useEffect } from 'react'
 import {socket} from '../../utils/websocket'
 import {getRoom} from '../../utils/api/controllers/roomCtrl'
 
-import {IconButton, MenuItem, Switch, TextField,Typography} from '@material-ui/core'
+import {IconButton, MenuItem, Switch, TextField,Typography,Button} from '@material-ui/core'
 import {BrightnessHigh,Brightness4, Language} from '@material-ui/icons'
 
 import {CandidateData,UserData} from '../../utils/localStorage'
@@ -24,6 +24,61 @@ import 'ace-builds/src-noconflict/theme-monokai'
 import 'ace-builds/src-noconflict/theme-kuroir'
 
 
+const languages = ["Java","C++14","JavaScript","Python"];
+const modes  = ["java",'c_cpp',"javascript","python"];
+const themes = ["kuroir","monokai"];
+const hackerEarthLang = ["JAVA","CPP14", "JAVASCRIPT_NODE", "PYTHON3"]
+
+
+function CodeCompiler(props){
+    const {code, lang} = props;
+    const [inputs,setInputs] = React.useState("");
+    const [output,setOutput] = React.useState("");
+
+    const handleCompile = ()=>{
+        
+        
+    }   
+    
+    const handleRun = ()=>{
+    }
+
+    return(
+        <div style={{display:"flex",flexDirection:"column",}}>
+
+            <div style={{display:"flex",flexGrow:1}}>
+                <TextField
+                    style={{display:"flex", flexGrow:1, minHeight:100,margin:10}}
+                    label="Inputs"
+                    variant="outlined"
+                    onChange={(event)=>{setInputs(event.target.value)}}
+                />
+                <div style={{borderStyle:"solid", borderRadius:10, margin:10,minHeight:100, minWidth:400}}>
+                    <Typography >
+                        Outputs
+                    </Typography>
+                    {output}
+                </div>  
+            </div>
+
+            <div style={{margin:10}}>
+                <Button onClick ={handleCompile} variant="outlined" color="primary" >
+                    Compile
+                </Button>
+
+                <Button onClick = {handleRun} variant ="outlined" color="primary" style={{marginLeft:20}}>
+                    Run
+                </Button>
+            </div>
+            
+
+                      
+        </div>
+
+    )
+}
+
+
 
 function CodeEditor(props){
     const {roomId} = props;
@@ -37,9 +92,7 @@ function CodeEditor(props){
         sender = UserData.getProfileData()._id;
     }
 
-    const languages = ["Java","C++","JavaScript","Python","MySQL","HTML","TypeScript","CSS"];
-    const modes  = ["java",'c_cpp',"javascript","python","mysql","html","typescript","css"];
-    const themes = ["kuroir","monokai"];
+    
 
     const [language,setLanguage] = React.useState(0);
     const [theme,setTheme] = React.useState(0);
@@ -131,6 +184,8 @@ function CodeEditor(props){
                 tabSize: 2,
                 }}/>
             </div>
+
+            <CodeCompiler code = {code} lang = {language}/>
             
         </div>
     )

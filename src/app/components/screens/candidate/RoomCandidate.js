@@ -86,10 +86,7 @@ function RoomCandidate(props){
 
                     <div style={{display:"flex", justifyContent:"center",flexGrow:1}}>
                         <div style={{fontSize:20, textAlign:"center" }}>
-                            Room Id -  
-                        </div>
-                        <div style={{fontSize:20, textAlign:"center" }}>
-                            {roomId}
+                            Copy Room Id 
                         </div>
 
                         <Button onClick={()=>{

@@ -25,3 +25,8 @@ export const backend = {
   //baseUrl:"http://localhost:8000/api",
   //websocketEndPoint: "http://localhost:8000"
 }
+
+export const hackerEarthConfig = {
+  clientId:"1f38d4741ef584f4f123c8c87843c2a9d857825c62ed.api.hackerearth.com",
+  clientSecret :"305867d51c64da5142420adb3a35f532a4954e4b",
+}

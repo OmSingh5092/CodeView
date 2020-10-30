@@ -22,7 +22,10 @@ const ViewHolder = withRouter(function(props){
                 <Typography style={{margin:10}}>
                     Room Id = {room._id}
                 </Typography>
-                <Typography style={{magrin:10}} variant="h6 ">
+                <Typography style={{margin:10}}>
+                    Password = {room.password}
+                </Typography>
+                <Typography style={{magrin:10, fontSize:20, fontFamily:"Roboto-Black"}} >
                     Title = {room.title}
                 </Typography>
 
