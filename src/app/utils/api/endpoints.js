@@ -31,3 +31,8 @@ export const candidateEndPoints = {
 export const chatEndPoints = {
     getChats:BASE_URL+"/chat/chats/room",
 }
+
+export const notesEndPoints = {
+    getNotes:BASE_URL+"/notes/get",
+    updateNotes:BASE_URL+"/notes/update",
+}

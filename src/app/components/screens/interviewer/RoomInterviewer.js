@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react'
 import {withRouter,useParams} from 'react-router-dom'
-import {FileCopy} from '@material-ui/icons'
+import {FileCopy, Edit} from '@material-ui/icons'
 
 import CodeEditor from '../../organism/CodeEditor'
 import LoadScreen from '../../atoms/LoadScreen'
 import ChatWindow from '../../organism/ChatWindow'
 import InterviewerWindow from '../../organism/InterviewerWindow'
+import NotesWindow from '../../organism/NotesWindow';
 
 import Online from '../../../res/icons/live.png';
 import Offline from '../../../res/icons/offline.png'
@@ -80,6 +81,10 @@ function ActionBar(props){
             <IconButton onClick = {()=>onButtonClick(1)}>
                 <People/>
             </IconButton>
+            <IconButton onClick = {()=>onButtonClick(4)}>
+                <Edit/>
+            </IconButton>
+
             <IconButton onClick = {()=>onButtonClick(2)}>
                 <ExitToApp/>
             </IconButton>
@@ -105,6 +110,7 @@ const InterviewScreen = withRouter(function(props){
 
     const [chatWindow,setChatWindow] = React.useState(false);
     const [peopleWindow,setPeopleWindow] = React.useState(false);
+    const [noteWindow,setNoteWindow] = React.useState(false);
     
     const handleLeaveRoom = ()=>{
         removeInterviewer(roomId).then((res)=>(res.json()))
@@ -128,13 +134,14 @@ const InterviewScreen = withRouter(function(props){
 
                     <div style={{display:"flex", justifyContent:"center",flexGrow:1}}>
                         <div style={{fontSize:20, textAlign:"center" }}>
-                            Copy Room Id
+                            Room Id
                         </div>
                         <Button onClick={()=>{
                             navigator.clipboard.writeText(roomId);}}>
                             <FileCopy/>
                         </Button>
                     </div>
+                    
                 </div>
                 
                 <div style={{display:"flex",margin:10}}>
@@ -154,6 +161,8 @@ const InterviewScreen = withRouter(function(props){
                                 history.push('../../');
                             }else if(pos == 3){
                                 handleLeaveRoom();
+                            }else if(pos == 4){
+                                setNoteWindow(true);
                             }
                         }
                     }
@@ -178,13 +187,23 @@ const InterviewScreen = withRouter(function(props){
                     
                     
                 </div>
-                <div style={{display:"flex"}}>
-                    {chatWindow?
-                        <ChatWindow roomId = {roomId} isCandidate = {false} onClose={()=>{setChatWindow(false)}}/>:
-                        <div/>
-                    }
-                    
+                <div style={{display:"flex",flexDirection:"column"}}>
+                        {noteWindow?
+                            <div style={{display:"flex",flexGrow:1}}>
+                                <NotesWindow roomId = {roomId} onClose={()=>{setNoteWindow(false)}}/>
+                            </div>:
+                            <div/>
+                        }
+
+                        {chatWindow?
+                            <div style={{display:"flex",flexGrow:2}}>
+                                <ChatWindow roomId = {roomId} isCandidate = {false} onClose={()=>{setChatWindow(false)}}/>
+                            </div>
+                            :
+                            <div/>
+                        }
                 </div>
+                
             </div>
 
             
@@ -234,6 +253,7 @@ function RoomInterviewer(props){
     const [showJoinDialog,setShowJoinDialog] = React.useState(false);
     const [candidateJoined, setCandidateJoined] = React.useState(false);
     const [candidateInfo,setCandidateInfo] = React.useState([]);
+    const [roomInfo,setRoomInfo] = React.useState({});
 
 
     const handleCandidateAccept = ()=>{
@@ -261,6 +281,8 @@ function RoomInterviewer(props){
                 props.history.push('../../');
             }
         })
+
+        
 
         socket.on("wait/"+id,(data)=>{
             const {room ,candidate,waiting} = data;

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import './style.css'
 
 import RegistrationForm from '../../components/molecules/RegistrationForm'
@@ -43,10 +43,10 @@ function RegisterScreen(props){
     }
 
     const handleSubmit = ()=>{
-        if(!validateData()){
+        /*if(!validateData()){
             setShowSnackBar(true);
             return false;
-        }
+        }  */
 
         //updating the profile
         console.log("Token",UserData.getToken());

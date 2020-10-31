@@ -1,4 +1,5 @@
 import React from 'react'
+import {useEffect} from 'react'
 import {withRouter} from 'react-router-dom'
 import { FormControl, TextField,InputLabel, OutlinedInput,InputAdornment,IconButton,Button } from '@material-ui/core'
 import {Visibility,VisibilityOff} from '@material-ui/icons'
@@ -8,10 +9,7 @@ import {CandidateData} from '../../utils/localStorage'
 
 function JoinRoomForm(props){
     const onSubmit = props.onSubmit;
-    var data = {
-        room:"",
-        password:"",
-    }
+    const [data,setData]  = React.useState({});
 
     const handleSubmit = ()=>{
         console.log("Data",data);
@@ -42,12 +40,20 @@ function JoinRoomForm(props){
                 style={{marginTop:10}}
                 label="Room Id"
                 variant="outlined"
-                onChange={(event)=>{data.room = event.target.value}}/>
+                onChange={(event)=>{
+                    const newData = JSON.parse(JSON.stringify(data));
+                    newData.room = event.target.value;
+                    setData(newData);
+                    }}/>
             <FormControl variant="outlined" style={{marginTop:10}}>
                 <InputLabel>Password</InputLabel>
                 <OutlinedInput
                     type={showPassword? 'text' : 'password'}
-                    onChange={(event)=>{data.password = event.target.value}}
+                    onChange={(event)=>{
+                        const newData = JSON.parse(JSON.stringify(data));
+                        newData.password = event.target.value;
+                        setData(newData);
+                    }}
                     endAdornment={
                     <InputAdornment position="end">
                         <IconButton

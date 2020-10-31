@@ -67,13 +67,6 @@ const InterviewerDialog = withRouter((props)=>{
             <div style={{margin:"auto"}}>
                 <GoogleLoginButton onSuccess= {googleLoginSuccess} onFailure = {(response)=>{console.log("Error",response)}}/>
             </div>
-            <div style={{margin:"auto"}} >
-                <ButtonBase onClick={()=>{}} >
-                    <div style={{margin:20, fontFamily:"Roboto-Black", fontSize:20}}>
-                        Are you a new user?
-                    </div>
-                </ButtonBase>
-            </div>
             <DialogActions>
                 <Button onClick={onClose}>
                     Cancle
